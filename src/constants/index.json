@@ -1,0 +1,7 @@
+{
+    "home": "Hello world",
+    "url":"http://localhost:3000/dataGet",
+    "collectionName":"articles",
+    "mongoURL":"mongodb://mongo/SERLER"
+}
+
