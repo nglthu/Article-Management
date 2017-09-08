@@ -84,7 +84,7 @@ class Home extends React.Component{
                         results={this.state.user} 
                         showFilter={true} 
                         showSettings={true} 
-                        columns={["author", "title","journal","doi","year","status"]}
+                        columns={["author", "title","journal","doi","year"]}
                         columnMetadata={columnMeta}
                         tableClassName={'table table-bordered table-striped table-hover'}
                         useGriddleStyles={true}
