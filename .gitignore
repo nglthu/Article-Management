@@ -1,0 +1,7 @@
+/dist/js/**
+/dist/css/**
+/dist/fonts/**
+/dist/images/**
+*.log
+/node_modules/**
+/dist/imgs/.DS_Store
