@@ -14,8 +14,8 @@ const { RowDefinition, ColumnDefinition } = DefaultModules
 
 const config = require('../../constants/index.json');
 
-//import {defaultLayout} from "./Master"
-//var defaultLayout = require('./Master');
+//import {defaultLayout} from "/src/component/application/Header.jsx"
+//var defaultLayout = require('./Mascter');
 
 console.log(config.url);
 @connect((store) =>{
@@ -74,6 +74,21 @@ class Home extends React.Component{
             displayName: 'Status'
         },
     ];
+    const styleConfig = {
+        icons: {
+          TableHeadingCell: {
+            sortDescendingIcon: <small>(desc)</small>,
+            sortAscendingIcon: <small>(asc)</small>,
+          },
+        },
+        classNames: {
+          Row: 'row-class',
+        },
+        styles: {
+          Filter: { fontSize: 18 },
+          Table: { border: "2px solid #555 "},
+        }
+}
        console.log(this.state.user);
         return (
             <defaultLayout>
@@ -90,7 +105,7 @@ class Home extends React.Component{
                         useGriddleStyles={true}
                         settingsToggleClassName='btn btn-default'
                         customPagerComponent={ BootstrapPager } 
-                        resultsPerPage={50}
+                        resultsPerPage={5}
                         externalChangeSort={this.changeSort}
                         externalSetFilter={this.setFilter}
                         externalSortColumn={this.props.sortColumn}
@@ -98,6 +113,7 @@ class Home extends React.Component{
                         externalSetPageSize={this.setPageSize}
                         externalMaxPage={this.props.maxPages}
                         externalCurrentPage={this.props.currentPage}
+                        styleConfig = {styleConfig}
                         />
                     </div>
                 </section>
