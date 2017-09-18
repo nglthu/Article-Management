@@ -63,10 +63,8 @@
     "redux-promise-middleware": "^4.2.1",
     "redux-thunk": "^2.2.0",
     "body-parser":"^1.17.2", 
-    "grid-react-bootstrap":"^0.4.4",
-    "bootstrap":"^3.3.7",
-    "react-banner":"^0.3.1"
-  },
+    "bootstrap":"^3.3.7"
+    },
   "peerDependencies": {
     "react": "^0.14.0"
   }
