@@ -50,7 +50,8 @@ class Article extends React.Component {
             })
             .then((json) => {
                 this.setState({
-                    articles: json
+                    articles: json,
+                    allArticles: json,
                 })
             });
     }
@@ -59,7 +60,7 @@ class Article extends React.Component {
         super(props)
         this.state = {
             articles: {},
-            userFull: {},
+            allArticles: {},
             startDateFrom: moment(),
             startDateTo: moment(),
             query: '',
@@ -68,14 +69,9 @@ class Article extends React.Component {
 
 
         }
-        this.handleChangeFrom = this.handleChangeFrom.bind(this);
-        this.handleChangeTo = this.handleChangeTo.bind(this);
-        // this.onChange = this.onChange.bind(this);
+      
         this.searchChange = this.searchChange.bind(this);
-        //this.changeFilter = this.changeFilter.bind(this);
-
-        // this.searchChange = this.searchChange.bind();
-
+      
     }
 
 
@@ -84,12 +80,10 @@ class Article extends React.Component {
 
         var result = JSON.stringify(data);
         var dataphrase = JSON.parse(result);
-        console.log(dataphrase);
-        console.log("filter value:");
-        console.log(dataphrase.filter(({ status }) => status != item));
+       
+        console.log('Data Filter Not Maching:',dataphrase.filter(({ status }) => status != item));
         return dataphrase.filter(({ status }) => status != item);
 
-        // return JSON.parse(data).filter(({ status }) => status = item);
 
     }
 
@@ -98,9 +92,8 @@ class Article extends React.Component {
 
         var result = JSON.stringify(data);
         var dataphrase = JSON.parse(result);
-        console.log(dataphrase);
-        console.log("filter value:");
-        console.log(dataphrase.filter(({ status }) => status != item));
+        
+        console.log('Article Status:',dataphrase.filter(({ status }) => status != item));
         return dataphrase.filter(({ status }) => status != item);
 
 
@@ -131,28 +124,39 @@ class Article extends React.Component {
     }
     resetName(event) {
         this.setState({
-            articles: event.getArticleFilter
+            articles: event.getArticleFilter()
         });
     }
     searchChange() {
 
-        if (this.refs.status.value === config.articleStatus5) {
-
-            var selectBoxValue = config.articleStatus4;
-            console.log('test user :');
-
-
-            var userFilter = this.dataFilterNotMaching(this.state.articles, selectBoxValue);
-            console.log('new function filter:');
-            console.log(userFilter);
-
+        if(this.refs.status.value === config.articlesStatusAll){
+            this.setState({
+                articles: this.getArticleFilter()
+    
+            });
+            console.log("status case 1:",this.refs.status.value);
+            console.log("status 1: Log data:", this.status.articles);
         }
+        
         else {
+            if (this.refs.status.value === config.articleStatus5) {
+                
+                            var selectBoxValue = config.articleStatus4;
+                            
+                            var userFilter = this.dataFilterNotMaching(this.state.allArticles, selectBoxValue);
+                            console.log("status case 2:",this.refs.status.value);
+                
+                        
 
-            userFilter = this.customFilterFunction(this.state.articles, this.refs.status.value);
-            console.log(this.refs.status.value);
+            }
+            else{
 
+            userFilter = this.customFilterFunction(this.state.allArticles, this.refs.status.value);
+           
+            console.log("status case 3:",this.refs.status.value);
+            }
         }
+
         this.setState({
             status: this.refs.status.value,
 
@@ -164,44 +168,7 @@ class Article extends React.Component {
 
     }
 
-    handleChangeDataSource() {
-        this.setState({
-            articles: getArticleFilter
-        })
-    }
-
-    handleChangeFrom(date) {
-        this.setState({
-            startDateFrom: date
-
-        });
-        this.toggleCalendar()
-    }
-
-    handleChangeTo(date) {
-        this.setState({
-            startDateTo: date
-
-        });
-        this.toggleCalendar()
-    }
-
-
-
-    toggleCalendar(e) {
-        e && e.preventDefault()
-        this.setState({ isOpen: !this.state.isOpen })
-    }
-
-
-
-    textOnClick(e) {
-        e.stopPropagation();
-    }
-
-    filterText(e) {
-        this.props.filterByColumn(this.state.query, this.props.year)
-    }
+    
 
 
     componentDidMount() {
@@ -215,10 +182,7 @@ class Article extends React.Component {
             articles: this.getArticleFilter()
         })
     }
-    searchChangeNew(e, value) {
-        console.log(e, value);
-        this.props.changeFilter(value);
-    }
+    
     handleClick = () => {
         ReactDOM.findDOMNode(this.refs.status).value = "";
         this.setState({
@@ -288,7 +252,7 @@ class Article extends React.Component {
                         <Col sm={8} md={8}>
 
                             <select onChange={this.searchChange} className='btn btn-default' style={boderSet} ref="status" cache={false} >
-                                <option value='All'>All Article Status</option>
+                                <option value={config.articlesStatusAll}>{config.articlesStatusAll}</option>
                                 <option value={config.articleStatus1}>{config.articleStatus1}</option>
                                 <option value={config.articleStatus2}>{config.articleStatus2}</option>
                                 <option value={config.articleStatus3}>{config.articleStatus3}</option>
@@ -332,8 +296,6 @@ class Article extends React.Component {
                         externalMaxPage={this.props.maxPages}
                         externalCurrentPage={this.props.currentPage}
                         styleConfig={styleConfig}
-
-
 
                     />
 
