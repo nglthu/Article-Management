@@ -1,7 +1,13 @@
 {
     "home": "Hello world",
     "url":"http://localhost:3000/dataGet",
+    "urlReject":"http://localhost:3000/dataGetReject/:id",
     "collectionName":"articles",
-    "mongoURL":"mongodb://mongo/SERLER"
+    "mongoURL":"mongodb://mongo/SERLER",
+    "urlData":"http://localhost:3000/",
+    "urlUserAdmin":"http://localhost:3000/userGetdata"
+
+    
+
 }
 

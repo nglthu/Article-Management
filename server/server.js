@@ -32,7 +32,6 @@ const compression = require("compression") // use for content encoding gzip
 const path = require('path')
 // Route handlers go there
 var index = require("./routes/index")
-//const config =  require('../../constants/index.json');
 
 
 
@@ -54,8 +53,9 @@ app.set('view engine', 'ejs') // view engine to enable embedded javascript
 
 // routes namespaces
 app.use("/", index);
-//app.use("/api");
-
+app.use('/user',index);
+app.use('/search',index);
+app.use('/articleFilter',index);
 
 function replacer(key, value) {
   
@@ -83,8 +83,59 @@ app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function () {
         //res.json(JSON.stringify("hello"));
     });
 
-    app.post('/update', function (req, res) {
+    
+
+    app.get('/dataGet/getArticalReject/:id', function (req, res) {
         //import MongoClient from 'mongodb';
+        //Connect to the db
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+
+            db.collection("article").find({_id:id}).toArray(function (err, result) {
+                if (err) throw err;
+                //result = result.replace("\\\\", "");
+                console.log(typeof result);
+                result=JSON.stringify(result);
+                var data = JSON.parse(result);
+                res.json(data);
+                db.close();
+            });
+        });
+        //res.json(JSON.stringify("hello"));
+    });
+
+    app.get('/userGetdata', function (req, res) {
+        
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+
+            db.collection("user_profile").find({}).toArray(function (err, result) {
+                if (err) throw err;
+                //result = result.replace("\\\\", "");
+                console.log(typeof result);
+                result=JSON.stringify(result);
+                var data = JSON.parse(result);
+                res.json(data);
+                db.close();
+            });
+        });
+        
+    });
+
+    app.get('/article', function (req, res) {
+       
+    });
+
+    app.get('/search', function (req, res) {
+        
+    });
+
+    app.get('/user', function (req, res) {
+        
+    });
+
+    app.post('/update', function (req, res) {
+       
         //Connect to the db
         MongoClient.connect(url, function (err, db) {
             db.collection("articles").insert({

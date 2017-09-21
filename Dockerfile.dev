@@ -49,4 +49,5 @@ WORKDIR /app
 ADD package.json /app
 
 # to install all the dependencies
-RUN npm install && npm cache clean
+RUN npm install 
+RUN npm cache clean
