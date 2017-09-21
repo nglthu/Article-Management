@@ -38,10 +38,10 @@ const config = require('../../constants/index.json');
 var _ = require('underscore');
 var squish = require('object-squish');
 
-var colType={
+var colType = {
     textAlign: "justify"
-    };
-    
+};
+
 var boderSet = {
     border: '1px solid #ccc'
 }
@@ -142,7 +142,7 @@ class Search extends React.Component {
         //console.log(this.customFilterFunction(this.state.user,this.state.query));
 
     }
-   
+
     handleChangeDataSource() {
         this.setState({
             user: getArticle
@@ -254,10 +254,71 @@ class Search extends React.Component {
 
             <section id="page-title">
                 <div style={{ display: 'flex' }}>
-                   
+                    <Grid>
+                        <Row>
+                            <Col sm={2} md={2}>
+                                Filter
+                        </Col>
+                            <Col sm={6} md={6}>
+
+
+
+
+                                <select onChange={this.searchChange} ref="status" cache={false} >
+                                    <option value='All'>All</option>
+                                    <option value='Rejected'>Rejected</option>
+                                    <option value='Pending'>Pending</option>
+                                    <option value='Moderated'>Moderated</option>
+
+                                </select>
+
+                                {/* <DropdownButton onClick={this.searchChange} ref="status" cache={false} >
+                                <MenuItem key="1995">1995</MenuItem>
+                                <MenuItem key="2004">2004</MenuItem>
+                                <MenuItem key="2010" active>2010</MenuItem>
+                                <MenuItem divider />
+                                <MenuItem key="2013">2013</MenuItem>
+                            </DropdownButton> } */}
+
+                                <Button onClick={this.handleClick}>Cancel</Button>
+                            </Col>
+                            <Col sm={4} md={4}>
+
+
+                                {/* <div className="filter-container">
+                                <input type="text"
+                                    name="search"
+                                    placeholder="Search..."
+                                    onChange={this.searchChange} />
+                            </div> */}
+                            </Col>
+                        </Row>
+                        <Row>
+                        </Row>
+                        <Row>
+
+
+                            <Col sm={2} md={2}>
+                                <p>Date Range from</p>
+                            </Col>
+                            <Col sm={4} md={4}>
+                                <DatePicker
+                                    selected={this.state.startDateFrom}
+                                    onChange={this.handleChangeFrom}
+                                />
+                            </Col>
+                            <Col sm={2} md={2}>To :</Col>
+                            <Col sm={4} md={4}><DatePicker
+                                selected={this.state.startDateTo}
+                                onChange={this.handleChangeTo}
+                            /></Col>
+
+                        </Row>
+                    </Grid>
+
                 </div>
 
-                
+
 
                 <div className="container clearfix">
 

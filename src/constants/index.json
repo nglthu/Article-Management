@@ -10,7 +10,8 @@
     "articleStatus2":"Accepted",
     "articleStatus3":"Rejected",
     "articleStatus4":"Analysis Complete",
-    "articleStatus5":"Partially Analysed"
+    "articleStatus5":"Partially Analysed",
+    "articlesStatusAll":"All Article Status"
 
     
 
