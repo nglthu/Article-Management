@@ -54,6 +54,7 @@ class Article extends React.Component {
                 })
             });
     }
+
     constructor(props) {
         super(props)
         this.state = {
@@ -79,8 +80,29 @@ class Article extends React.Component {
 
 
     dataFilterNotMaching(data, item) {
+        console.log(data);
 
-        return JSON.parse(data).filter(({ status }) => status != item);
+        var result = JSON.stringify(data);
+        var dataphrase = JSON.parse(result);
+        console.log(dataphrase);
+        console.log("filter value:");
+        console.log(dataphrase.filter(({ status }) => status != item));
+        return dataphrase.filter(({ status }) => status != item);
+
+        // return JSON.parse(data).filter(({ status }) => status = item);
+
+    }
+
+    dataArticleStatus(data, item) {
+        console.log(data);
+
+        var result = JSON.stringify(data);
+        var dataphrase = JSON.parse(result);
+        console.log(dataphrase);
+        console.log("filter value:");
+        console.log(dataphrase.filter(({ status }) => status != item));
+        return dataphrase.filter(({ status }) => status != item);
+
 
     }
 
@@ -88,11 +110,6 @@ class Article extends React.Component {
     customFilterFunction(items, query) {
         return _.filter(items, (item) => {
             var flat = squish(item);
-            console.log("1. Filter Check");
-            console.log(query);
-            var test = false;
-
-
 
             for (var key in flat) {
                 if (String(flat[key]).toLowerCase().indexOf(query.toLowerCase()) >= 0)
@@ -119,10 +136,10 @@ class Article extends React.Component {
     }
     searchChange() {
 
-        if (this.refs.status.value === 'PartiallyAnalysed') {
+        if (this.refs.status.value === config.articleStatus5) {
 
-            var selectBoxValue = 'Analysis Complete';
-            console.log('test user wwwwww:');
+            var selectBoxValue = config.articleStatus4;
+            console.log('test user :');
 
 
             var userFilter = this.dataFilterNotMaching(this.state.articles, selectBoxValue);
@@ -258,12 +275,7 @@ class Article extends React.Component {
 
             <section id="page-title">
                 <div style={{ display: 'flex' }}>
-                    {/* <input
-              name='title'
-              placeholder="testing"
-              floatingLabelText='title'
-              onChange={this.searchChangeNew}
-            /> */}
+
 
                 </div>
 
@@ -275,24 +287,16 @@ class Article extends React.Component {
                         </Col>
                         <Col sm={8} md={8}>
 
-
                             <select onChange={this.searchChange} className='btn btn-default' style={boderSet} ref="status" cache={false} >
                                 <option value='All'>All Article Status</option>
-                                <option value='To be Moderated'>To be morderated</option>
-                                <option value='Accepted'>Accepted</option>
-                                <option value='Rejected'>Rejected</option>
-                                <option value='Analysis Complete'>Analysis Complete</option>
-                                <option value='PartiallyAnalysed'>Partially analysed</option>
+                                <option value={config.articleStatus1}>{config.articleStatus1}</option>
+                                <option value={config.articleStatus2}>{config.articleStatus2}</option>
+                                <option value={config.articleStatus3}>{config.articleStatus3}</option>
+                                <option value={config.articleStatus4}>{config.articleStatus4}</option>
+                                <option value={config.articleStatus5}>{config.articleStatus5}</option>
 
                             </select>
 
-                            {/* <DropdownButton onClick={this.searchChange} ref="status" cache={false} >
-                                <MenuItem key="1995">1995</MenuItem>
-                                <MenuItem key="2004">2004</MenuItem>
-                                <MenuItem key="2010" active>2010</MenuItem>
-                                <MenuItem divider />
-                                <MenuItem key="2013">2013</MenuItem>
-                            </DropdownButton> } */}
 
                             <Button onClick={this.handleClick}>Cancel Filter of Articles</Button>
                         </Col>
@@ -329,10 +333,7 @@ class Article extends React.Component {
                         externalCurrentPage={this.props.currentPage}
                         styleConfig={styleConfig}
 
-                    /*  { useCustomFilterer={true}
-                      customFilterer={this.customFilterFunction}
-                      useCustomFilterComponent={true}
-                      customFilterComponent={this.customFilterComponent} }*/
+
 
                     />
 
