@@ -11,6 +11,9 @@ router.use(
 )
 
 router.get("/", getIndex)
+router.get('/user', getIndex)
+router.get('/article', getIndex)
+router.get('/search', getIndex)
 
 module.exports = router
 

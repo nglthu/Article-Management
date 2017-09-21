@@ -3,6 +3,9 @@ import {Route, Switch} from 'react-router-dom'
 
 //Dynamic Components
 import Home from  "./components/home/Home.jsx"
+import UserLog from  "./components/user/UserLog.jsx"
+import Search from  "./components/search/Search.jsx"
+import Article from  "./components/article/Article.jsx"
 
 //Static Components
 import Header from "./components/application/Header.jsx"
@@ -31,9 +34,14 @@ const NotFound = function(){
 const routes = (
     <div>
         <Header/>
-        <Switch>
-            <Route path="/" component={Home}/>  
-            <Route component={NotFound}/>
+        <Switch >
+        
+             <Route exact path="/" component={Home}/> 
+             <Route path="/user" component={UserLog}/>
+             <Route path="/search" component={Search}/>
+             <Route path="/article" component={Article}/>
+             <Route component={NotFound}/>
+          
         </Switch>
     </div>
     )

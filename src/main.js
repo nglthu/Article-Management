@@ -10,6 +10,8 @@ import thunk from 'redux-thunk';
 import promise from "redux-promise-middleware";
 import routes from "./routes"
 import logger from 'redux-logger';
+import DataPicker from 'react-datepicker';
+import moment from 'moment';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
