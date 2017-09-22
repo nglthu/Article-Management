@@ -95,19 +95,6 @@ class Search extends React.Component {
             return false;
         });
     }
-    //TODO: get object and filter year and Month from here
-    ///////////////////
-    dataFilterNotMaching(data, item) {
-        console.log(data);
-
-        var result = JSON.stringify(data);
-        var dataphrase = JSON.parse(result);
-
-        console.log('Data Filter Not Maching:', dataphrase.filter(({ status }) => status != item));
-        return dataphrase.filter(({ status }) => status != item);
-
-
-    }
 
 
     getInitialState() {
@@ -122,74 +109,6 @@ class Search extends React.Component {
         });
     }
 
-
-    dataArticleStatus(data, item) {
-        console.log(data);
-
-        var result = JSON.stringify(data);
-        var dataphrase = JSON.parse(result);
-
-        console.log('Article Status:', dataphrase.filter(({ status }) => status != item));
-        return dataphrase.filter(({ status }) => status != item);
-
-
-    }
-
-
-    customFilterFunction(items, query) {
-        return _.filter(items, (item) => {
-            var flat = squish(item);
-
-            for (var key in flat) {
-                if (String(flat[key]).toLowerCase().indexOf(query.toLowerCase()) >= 0)
-                    return true;
-            }
-
-
-            return false;
-        });
-    }
-    //TODO: Keep here to work on the search option for date
-    searchChange() {
-
-        if (this.refs.status.value === config.articlesStatusAll) {
-            this.setState({
-                articles: this.getArticleFilter()
-
-            });
-            console.log("status case 1:", this.refs.status.value);
-            console.log("status 1: Log data:", this.status.articles);
-        }
-
-        else {
-            if (this.refs.status.value === config.articleStatus5) {
-
-                var selectBoxValue = config.articleStatus4;
-
-                var userFilter = this.dataFilterNotMaching(this.state.allArticles, selectBoxValue);
-                console.log("status case 2:", this.refs.status.value);
-
-
-
-            }
-            else {
-
-                userFilter = this.customFilterFunction(this.state.allArticles, this.refs.status.value);
-
-                console.log("status case 3:", this.refs.status.value);
-            }
-        }
-
-        this.setState({
-            status: this.refs.status.value,
-
-            articles: userFilter
-
-        });
-
-
-
-    }
 
     handleChangeDataSource() {
         this.setState({
@@ -211,6 +130,7 @@ class Search extends React.Component {
 
         });
         this.toggleCalendar()
+        console.log("date to after click", this.state.startDateTo);
     }
 
 
@@ -219,6 +139,49 @@ class Search extends React.Component {
         e && e.preventDefault()
         this.setState({ isOpen: !this.state.isOpen })
     }
+
+    dateFilterQuery(data, dateFrom, dateTo) {
+        console.log(data);
+
+        var result = JSON.stringify(data);
+        var dateFilter = JSON.parse(result);
+
+        var dateFilterData = dateFilter.filter(function (a) {
+            return ((parseInt(a.year) > dateFrom) && (parseInt(a.year) < dateTo))
+        });
+
+
+        return dateFilterData;
+
+
+    }
+    //TODO: Keep here to work on the search option for date
+    searchChange() {
+
+
+        this.setState({
+
+            user: this.getArticle
+
+        });
+
+        console.log("dateFrom:", this.state.startDateFrom.year());
+        console.log("dateTo:", this.state.startDateTo.year());
+        console.log("data", this.state.user);
+
+        var yearFrom = parseInt(this.state.startDateFrom.year());
+        var yearTo = parseInt(this.state.startDateTo.year());
+        var dataFilter = this.dateFilterQuery(this.state.user, yearFrom, yearTo);
+
+        console.log("test data filter: ", dataFilter);
+        this.setState({
+
+            user: dataFilter
+
+        });
+    }
+
+
 
 
 
@@ -310,18 +273,6 @@ class Search extends React.Component {
                             <Col sm={6} md={6}>
 
 
-
-
-
-                                {/* <DropdownButton onClick={this.searchChange} ref="status" cache={false} >
-                                <MenuItem key="1995">1995</MenuItem>
-                                <MenuItem key="2004">2004</MenuItem>
-                                <MenuItem key="2010" active>2010</MenuItem>
-                                <MenuItem divider />
-                                <MenuItem key="2013">2013</MenuItem>
-                            </DropdownButton> } */}
-                                {/* 
-                                <Button onClick={this.handleClick}>Cancel</Button> */}
                             </Col>
                             <Col sm={4} md={4}>
 
@@ -338,7 +289,7 @@ class Search extends React.Component {
                                 Date from:
                             </Col>
                             <Col sm={3} md={3}>
-                                <DatePicker ref="dateFrom" className='btn btn-default' 
+                                <DatePicker ref="dateFrom" className='btn btn-default'
                                     selected={this.state.startDateFrom}
                                     onChange={this.handleChangeFrom}
                                 />
@@ -361,7 +312,7 @@ class Search extends React.Component {
                 <div className="container clearfix">
 
 
-                    <h1>List of Articles:</h1>
+                    <h1>List of Articles from Year to Year:</h1>
                     <Griddle
                         tableClassName={'table table-bordered table-striped table-hover'}
                         results={this.state.user}
