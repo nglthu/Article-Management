@@ -19,20 +19,14 @@ import ReactDOM from 'react-dom';
 import { DefaultModules } from 'griddle-render';
 import { TextInput, Input } from 'react-native';
 
+
 const { RowDefinition, ColumnDefinition } = DefaultModules
 
 
 
 
 import 'react-datepicker/dist/react-datepicker.css';
-// import 'react-date-picker/index.css';
-// import { DateField, Calendar } from 'react-date-picker'
 
-
-//var datepicker = require('react-datepicker');
-
-//import { DefaultModules } from 'griddle-render';
-//const { RowDefinition, ColumnDefinition } = DefaultModules;
 
 const config = require('../../constants/index.json');
 var _ = require('underscore');
@@ -81,16 +75,14 @@ class Search extends React.Component {
 
 
         }
+
+        this.searchChange = this.searchChange.bind(this);
         this.handleChangeFrom = this.handleChangeFrom.bind(this);
         this.handleChangeTo = this.handleChangeTo.bind(this);
-        // this.onChange = this.onChange.bind(this);
-        this.searchChange = this.searchChange.bind(this);
-        //this.changeFilter = this.changeFilter.bind(this);
-
-        // this.searchChange = this.searchChange.bind();
 
     }
     //search function to filter out value equal to Query
+    //Query matching
     customFilterFunction(items, query) {
         return _.filter(items, (item) => {
             var flat = squish(item);
@@ -103,7 +95,19 @@ class Search extends React.Component {
             return false;
         });
     }
+    //TODO: get object and filter year and Month from here
+    ///////////////////
+    dataFilterNotMaching(data, item) {
+        console.log(data);
 
+        var result = JSON.stringify(data);
+        var dataphrase = JSON.parse(result);
+
+        console.log('Data Filter Not Maching:', dataphrase.filter(({ status }) => status != item));
+        return dataphrase.filter(({ status }) => status != item);
+
+
+    }
 
 
     getInitialState() {
@@ -117,29 +121,73 @@ class Search extends React.Component {
             user: event.getArticle
         });
     }
-    searchChange() {
-        //window.location.reload();
-        //this.sevtState({ user: this.getArticle });
-        console.log('test user:');
 
-        var userFilter = this.customFilterFunction(this.state.user, this.refs.status.value);
-        //var userFilter = this.customFilterFunction(this.state.user, this.state.selectedItem );
+
+    dataArticleStatus(data, item) {
+        console.log(data);
+
+        var result = JSON.stringify(data);
+        var dataphrase = JSON.parse(result);
+
+        console.log('Article Status:', dataphrase.filter(({ status }) => status != item));
+        return dataphrase.filter(({ status }) => status != item);
+
+
+    }
+
+
+    customFilterFunction(items, query) {
+        return _.filter(items, (item) => {
+            var flat = squish(item);
+
+            for (var key in flat) {
+                if (String(flat[key]).toLowerCase().indexOf(query.toLowerCase()) >= 0)
+                    return true;
+            }
+
+
+            return false;
+        });
+    }
+    //TODO: Keep here to work on the search option for date
+    searchChange() {
+
+        if (this.refs.status.value === config.articlesStatusAll) {
+            this.setState({
+                articles: this.getArticleFilter()
+
+            });
+            console.log("status case 1:", this.refs.status.value);
+            console.log("status 1: Log data:", this.status.articles);
+        }
+
+        else {
+            if (this.refs.status.value === config.articleStatus5) {
+
+                var selectBoxValue = config.articleStatus4;
+
+                var userFilter = this.dataFilterNotMaching(this.state.allArticles, selectBoxValue);
+                console.log("status case 2:", this.refs.status.value);
+
+
+
+            }
+            else {
+
+                userFilter = this.customFilterFunction(this.state.allArticles, this.refs.status.value);
+
+                console.log("status case 3:", this.refs.status.value);
+            }
+        }
+
         this.setState({
             status: this.refs.status.value,
 
-            user: userFilter
+            articles: userFilter
 
         });
 
-        console.log('value of select');
-        console.log(this.refs.status.value.toString());
-        console.log('userFilter');
-        console.log(userFilter);
-        console.log('after filter a b c');
-        console.log(this.state.user);
-        // this.props.state.user.bind(this);
 
-        //console.log(this.customFilterFunction(this.state.user,this.state.query));
 
     }
 
@@ -257,20 +305,13 @@ class Search extends React.Component {
                     <Grid>
                         <Row>
                             <Col sm={2} md={2}>
-                                Filter
-                        </Col>
+
+                            </Col>
                             <Col sm={6} md={6}>
 
 
 
 
-                                <select onChange={this.searchChange} ref="status" cache={false} >
-                                    <option value='All'>All</option>
-                                    <option value='Rejected'>Rejected</option>
-                                    <option value='Pending'>Pending</option>
-                                    <option value='Moderated'>Moderated</option>
-
-                                </select>
 
                                 {/* <DropdownButton onClick={this.searchChange} ref="status" cache={false} >
                                 <MenuItem key="1995">1995</MenuItem>
@@ -279,18 +320,13 @@ class Search extends React.Component {
                                 <MenuItem divider />
                                 <MenuItem key="2013">2013</MenuItem>
                             </DropdownButton> } */}
-
-                                <Button onClick={this.handleClick}>Cancel</Button>
+                                {/* 
+                                <Button onClick={this.handleClick}>Cancel</Button> */}
                             </Col>
                             <Col sm={4} md={4}>
 
 
-                                {/* <div className="filter-container">
-                                <input type="text"
-                                    name="search"
-                                    placeholder="Search..."
-                                    onChange={this.searchChange} />
-                            </div> */}
+
                             </Col>
                         </Row>
                         <Row>
@@ -298,21 +334,23 @@ class Search extends React.Component {
                         <Row>
 
 
-                            <Col sm={2} md={2}>
-                                <p>Date Range from</p>
+                            <Col sm={1} md={1}>
+                                Date from:
                             </Col>
-                            <Col sm={4} md={4}>
-                                <DatePicker
+                            <Col sm={3} md={3}>
+                                <DatePicker ref="dateFrom" className='btn btn-default' 
                                     selected={this.state.startDateFrom}
                                     onChange={this.handleChangeFrom}
                                 />
                             </Col>
-                            <Col sm={2} md={2}>To :</Col>
-                            <Col sm={4} md={4}><DatePicker
+                            <Col sm={1} md={1}>To: </Col>
+                            <Col sm={3} md={3}><DatePicker ref="dateTo" className='btn btn-default'
                                 selected={this.state.startDateTo}
                                 onChange={this.handleChangeTo}
                             /></Col>
-
+                            <Col sm={2} md={2}>
+                                <Button onClick={this.searchChange}>Filter</Button>
+                            </Col>
                         </Row>
                     </Grid>
 
