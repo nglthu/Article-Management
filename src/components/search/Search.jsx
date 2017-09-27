@@ -18,6 +18,7 @@ import ReactDOM from 'react-dom';
 //import Griddle, { plugins } from 'griddle-react';
 import { DefaultModules } from 'griddle-render';
 import { TextInput, Input } from 'react-native';
+import $ from 'jquery'
 
 
 const { RowDefinition, ColumnDefinition } = DefaultModules
@@ -49,6 +50,7 @@ console.log(config.url);
     }
 })
 
+
 class Search extends React.Component {
 
     getArticle() {
@@ -70,17 +72,71 @@ class Search extends React.Component {
             startDateFrom: moment(),
             startDateTo: moment(),
             query: '',
-            status: ''
-
-
-
+            status: '',
+            rows:[{"fieldName":"Author","condition":"Contains","value":"","operator":""}],
+	    optionsOperatorState:'',
+	    optionsFieldState:'Author',
+	    optionsConditionState:'Contains',
+            searchText:''
         }
 
         this.searchChange = this.searchChange.bind(this);
         this.handleChangeFrom = this.handleChangeFrom.bind(this);
         this.handleChangeTo = this.handleChangeTo.bind(this);
+       // this.handleoptionsOperatorState = this.handleoptionsOperatorState.bind(this);
+       // this.handleoptionsFieldState = this.handleoptionsFieldState.bind(this);
+        //this.handleoptionsConditionState = this.handleoptionsConditionState.bind(this);
+       // this.handleSearchTextChange = this.handleSearchTextChange.bind(this);
+        this.addRow = this.addRow.bind(this);
+        this.removeRow = this.removeRow.bind(this);
+        this.getQueryList= this.getQueryList.bind(this);
 
     }
+     
+    getQueryList()
+    {
+                //<td>{query.field}</td>
+                //      rows:[{"fieldName":"","condition":"","value":"","operator":""}]
+          
+     return this.state.rows.map((query,index) => (              
+                      <tr key={index}>
+                         <td> {index==0?'':<select id={'ddOperator_'+index} value={query.operator} onChange={this.handleoptionsOperatorState.bind(this)} ref="slOperator"><option value="And">And</option><option value="Or">Or</option>      </select>}
+			  </td>
+			 <td>
+			      If <select id={'ddFieldName_'+index} value={query.fieldName} onChange={this.handleoptionsFieldState.bind(this)} ref="slField">
+					<option value="Author">Author</option>
+					<option value="Title">Title</option>
+					<option value="Journal">Journal</option>
+					<option value="Status">Status</option> 
+                                        <option value="DOI">DOI</option>
+					<option value="Year">Year</option>
+                               </select> -
+                         </td>
+			<td>
+			       <select id={'ddCondition_'+index} value={query.condition} onChange={this.handleoptionsConditionState.bind(this)} ref="slCondition">
+					<option value="Contains">Contains</option>
+					<option value="Doesnotcontains">Does not contains</option>
+					<option value="Beginswith">Begins with</option>
+					<option value="Endswith">Ends with</option> 
+                                        <option value="Isequalto">Is equal to</option>
+					<option value="Islessthan">Is less than</option>
+					<option value="Islessthanorequal">Is less than or equal</option>
+					<option value="Ismorethan">Is more than</option>
+					<option value="Ismorethanorequal">Is more than or equal</option>
+                               </select>
+                         </td>
+			 <td>
+				<input type="text" id={'txtsearch_'+index}  value={query.value} onChange={this.handleSearchTextChange.bind(this)} />
+                         </td>
+			  <td><button  onClick={this.addRow} >Add</button></td>
+			  <td>{index==0?<button value={index} title='First row delete Disabled' disabled>Remove</button>:<button value={index} onClick={this.removeRow}>Remove</button>}</td>
+                      </tr>
+                    )) 
+
+
+
+     }
+     
     //search function to filter out value equal to Query
     //Query matching
     customFilterFunction(items, query) {
@@ -99,7 +155,7 @@ class Search extends React.Component {
 
     getInitialState() {
         return {
-            "query": "",
+            query: "",
             user: this.getArticle
         };
     }
@@ -109,6 +165,78 @@ class Search extends React.Component {
         });
     }
 
+
+    handleoptionsOperatorState(e)
+    {
+	 var id = e.target.id;
+
+      var rowid= id.substring(id.indexOf('_')+1);
+   
+      var queryRows = this.state.rows;
+
+      queryRows[rowid].operator=  e.target.value; //this.refs.slOperator.value;
+   
+      this.setState({rows: queryRows});
+
+
+	//this.setState({optionsOperatorState:this.refs.slOperator.value},()=>{alert(this.state.optionsOperatorState);console.log("Operator Select");})
+      //alert(this.state.optionsOperatorState);
+     }
+
+    handleoptionsFieldState(e)
+    {
+	 var id = e.target.id;
+
+      var rowid= id.substring(id.indexOf('_')+1);
+   
+      var queryRows = this.state.rows;
+
+      queryRows[rowid].fieldName= e.target.value; //this.refs.slField.value;
+   
+      this.setState({rows: queryRows},()=>{console.log("Field Select");})
+
+	//this.setState({optionsFieldState:this.refs.slField.value},()=>{alert(this.state.optionsFieldState);console.log("Field Select");})
+     // alert(this.state.optionsFieldState);
+     }
+
+    handleoptionsConditionState(e)
+    {
+      var id = e.target.id;
+ 
+
+      var rowid= id.substring(id.indexOf('_')+1);
+   
+      var queryRows = this.state.rows;
+
+      queryRows[rowid].condition= e.target.value;  //this.refs.slCondition.value;
+   
+      this.setState({rows: queryRows});
+
+//	this.setState({optionsConditionState:this.refs.slCondition.value},()=>{alert(this.state.optionsConditionState);console.log("Condition Select");})
+ //     alert(this.state.optionsConditionState);
+     }
+
+    handleSearchTextChange(e)
+    {
+      var id = e.target.id;
+
+      var rowid= id.substring(id.indexOf('_')+1);
+   
+     var queryRows = this.state.rows;
+
+    
+
+     //var tmprow=  this.state.rows[rowid];
+      
+     //alert(JSON.stringify(queryRows[rowid].value));
+      queryRows[rowid].value=e.target.value;
+     // alert(JSON.stringify(queryRows[rowid].value));
+     // alert(JSON.stringify(queryRows));
+
+   this.setState({rows: queryRows});
+      //this.setState({searchText:e.target.value},()=>{alert(this.state.searchText);console.log("Text Change");})
+      //alert(this.state.searchText);
+     }
 
     handleChangeDataSource() {
         this.setState({
@@ -193,12 +321,51 @@ class Search extends React.Component {
         this.props.filterByColumn(this.state.query, this.props.year)
     }
 
+    addRow(){
+        var rows = this.state.rows;
+      // rows:[{"fieldName":"","condition":"","value":"","operator":""}]
+
+/*
+var istemprow = rows.map(function(q){
+      return (q.fieldName);
+    });
+
+      
+      //row.length=1 and fieldName=="" remove
+	if (rows.length==1 && istemprow.toString()=="")
+	{
+	   rows.splice(0,1);
+	   this.setState({rows: rows});
+           this.setState({optionsOperatorState:"And"});
+         }
+*/
+	   var strval="";
+        if (rows.length>=1)
+	{
+           strval= '{"fieldName":"Author","condition":"Contains","value":"","operator":"And"}';
+         }
+        else
+        {
+           strval= '{"fieldName":"Author","condition":"Contains","value":"","operator":""}';
+         }
+           rows.push(JSON.parse(strval));
+           this.setState({rows: rows});
+        
+    }
+
+    removeRow(e){	
+       var ind= e.target.value;
+        var rows = this.state.rows;
+	rows.splice(ind,1);
+        this.setState({rows: rows});        
+    }
 
     componentDidMount() {
         this.props.dispatch(getIndex())
         this.setState({
             user: this.getArticle()
         })
+                
     }
     componentWillUnmount() {
         this.setState({
@@ -221,7 +388,7 @@ class Search extends React.Component {
 
         const columnMeta = [{
             columnName: 'author',
-            displayName: 'Author'
+            displayName: 'Author',
         }, {
             columnName: 'title',
             displayName: 'Title'
@@ -231,7 +398,6 @@ class Search extends React.Component {
         }, {
             columnName: 'doi',
             displayName: 'DOI',
-
             customHeaderComponentProps: { color: 'blue' }
         }, {
             columnName: 'year',
@@ -276,15 +442,19 @@ class Search extends React.Component {
                             </Col>
                             <Col sm={4} md={4}>
 
-
-
                             </Col>
                         </Row>
                         <Row>
                         </Row>
                         <Row>
-
-
+			    <Col sm={1} md={1}>
+                                Description:
+                            </Col>
+                            <Col sm={3} md={9}>
+                  		{JSON.stringify(this.state.rows, null, 2) }
+			    </Col>
+                        </Row>
+                        <Row>
                             <Col sm={1} md={1}>
                                 Date from:
                             </Col>
@@ -304,10 +474,17 @@ class Search extends React.Component {
                             </Col>
                         </Row>
                     </Grid>
-
+		 
                 </div>
 
+		<div>
+		    <table>
+		         <tbody>
+			   {this.getQueryList()}                         
+			 </tbody>
+		    </table>
 
+		</div>
 
                 <div className="container clearfix">
 
