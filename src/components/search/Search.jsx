@@ -383,6 +383,56 @@ class Search extends React.Component {
                     });
 
                     break;
+                
+                    case 'Journal':
+                    
+                                        var dateFilterData2 = data.filter(function (a) {
+                    
+                   
+                    
+                                            if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.journal.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
+                                                console.log("journal filter:", a);
+                                                optionFilterData.push(a);
+                                                return a;
+                                            }
+                    
+                    
+                                            if ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.journal.toLowerCase() === rows[row].value.toLowerCase())) {
+                                                console.log("journal filter:", a);
+                    
+                                                optionFilterData.push(a);
+                                                return a;
+                                            }
+                    
+                                            if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.journal.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
+                                                console.log("contain value:", a.journal.toLowerCase().includes(rows[row].value));
+                                                console.log("journal filter:", a);
+                                                optionFilterData.push(a);
+                                                return a;
+                                            }
+                    
+                    
+                                            if ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.journal.toLowerCase().trim().startsWith(rows[row].value))) {
+                    
+                    
+                                                optionFilterData.push(a);
+                                                return a;
+                                            }
+                    
+                                            if ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.journal.toLowerCase().endsWith(rows[row].value))) {
+                    
+                                                optionFilterData.push(a);
+                                                return a;
+                                            }
+                    
+                                            else {
+                                                console.log("NO CONDITION OF JOURNAL FOUND");
+                                            }
+                    
+                    
+                                        });
+                    
+                                        break;
 
                 default:
                     return "";
