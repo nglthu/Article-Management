@@ -19,6 +19,7 @@ import ReactDOM from 'react-dom';
 import { DefaultModules } from 'griddle-render';
 import { TextInput, Input } from 'react-native';
 import $ from 'jquery'
+//import {cucumber} from "cucumber";
 
 
 const { RowDefinition, ColumnDefinition } = DefaultModules
@@ -73,70 +74,66 @@ class Search extends React.Component {
             startDateTo: moment(),
             query: '',
             status: '',
-            rows:[{"fieldName":"Author","condition":"Contains","value":"","operator":""}],
-	    optionsOperatorState:'',
-	    optionsFieldState:'Author',
-	    optionsConditionState:'Contains',
-            searchText:''
+            rows: [{ "fieldName": "Author", "condition": "Contains", "value": "", "operator": "" }],
+            optionsOperatorState: '',
+            optionsFieldState: 'Author',
+            optionsConditionState: 'Contains',
+            searchText: ''
         }
 
         this.searchChange = this.searchChange.bind(this);
         this.handleChangeFrom = this.handleChangeFrom.bind(this);
         this.handleChangeTo = this.handleChangeTo.bind(this);
-       // this.handleoptionsOperatorState = this.handleoptionsOperatorState.bind(this);
-       // this.handleoptionsFieldState = this.handleoptionsFieldState.bind(this);
-        //this.handleoptionsConditionState = this.handleoptionsConditionState.bind(this);
-       // this.handleSearchTextChange = this.handleSearchTextChange.bind(this);
+
         this.addRow = this.addRow.bind(this);
         this.removeRow = this.removeRow.bind(this);
-        this.getQueryList= this.getQueryList.bind(this);
+        this.getQueryList = this.getQueryList.bind(this);
 
     }
-     
-    getQueryList()
-    {
-                //<td>{query.field}</td>
-                //      rows:[{"fieldName":"","condition":"","value":"","operator":""}]
-          
-     return this.state.rows.map((query,index) => (              
-                      <tr key={index}>
-                         <td> {index==0?'':<select id={'ddOperator_'+index} value={query.operator} onChange={this.handleoptionsOperatorState.bind(this)} ref="slOperator"><option value="And">And</option><option value="Or">Or</option>      </select>}
-			  </td>
-			 <td>
-			      If <select id={'ddFieldName_'+index} value={query.fieldName} onChange={this.handleoptionsFieldState.bind(this)} ref="slField">
-					<option value="Author">Author</option>
-					<option value="Title">Title</option>
-					<option value="Journal">Journal</option>
-					<option value="Status">Status</option> 
-                                        <option value="DOI">DOI</option>
-					<option value="Year">Year</option>
-                               </select> -
-                         </td>
-			<td>
-			       <select id={'ddCondition_'+index} value={query.condition} onChange={this.handleoptionsConditionState.bind(this)} ref="slCondition">
-					<option value="Contains">Contains</option>
-					<option value="Doesnotcontains">Does not contains</option>
-					<option value="Beginswith">Begins with</option>
-					<option value="Endswith">Ends with</option> 
-                                        <option value="Isequalto">Is equal to</option>
-					<option value="Islessthan">Is less than</option>
-					<option value="Islessthanorequal">Is less than or equal</option>
-					<option value="Ismorethan">Is more than</option>
-					<option value="Ismorethanorequal">Is more than or equal</option>
-                               </select>
-                         </td>
-			 <td>
-				<input type="text" id={'txtsearch_'+index}  value={query.value} onChange={this.handleSearchTextChange.bind(this)} />
-                         </td>
-			  <td><button  onClick={this.addRow} >Add</button></td>
-			  <td>{index==0?<button value={index} title='First row delete Disabled' disabled>Remove</button>:<button value={index} onClick={this.removeRow}>Remove</button>}</td>
-                      </tr>
-                    )) 
+
+    getQueryList() {
+
+        return this.state.rows.map((query, index) => (
+            <tr key={index}>
+                <td> {index == 0 ? '' : <select id={'ddOperator_' + index} value={query.operator} onChange={this.handleoptionsOperatorState.bind(this)} ref="slOperator">
+                    <option value="And">And</option><option value="Or">Or</option>
+                </select>}
+                </td>
+                <td>
+                    If <select id={'ddFieldName_' + index} value={query.fieldName} onChange={this.handleoptionsFieldState.bind(this)} ref="slField">
+                        <option value="Author">Author</option>
+                        <option value="Title">Title</option>
+                        <option value="Journal">Journal</option>
+                        <option value="Status">Status</option>
+                        <option value="DOI">DOI</option>
+                        {/* <option value="Year">Year</option> */}
+                    </select>
+                </td>
+                <td>
+                    <select id={'ddCondition_' + index} value={query.condition} onChange={this.handleoptionsConditionState.bind(this)} ref="slCondition">
+                        <option value="Contains">Contains</option>
+                        <option value="Doesnotcontains">Does not contains</option>
+                        <option value="Beginswith">Begins with</option>
+                        <option value="Endswith">Ends with</option>
+                        <option value="Isequalto">Is equal to</option>
+                        {/* <option value="Islessthan">Is less than</option>
+                        <option value="Islessthanorequal">Is less than or equal</option>
+                        <option value="Ismorethan">Is more than</option>
+                        <option value="Ismorethanorequal">Is more than or equal</option> */}
+                    </select>
+                </td>
+                <td>
+                    <input type="text" id={'txtsearch_' + index} value={query.value} onChange={this.handleSearchTextChange.bind(this)} />
+                </td>
+                <td><button onClick={this.addRow} >Add</button></td>
+                <td>{index == 0 ? <button value={index} title='First row delete Disabled' disabled>Remove</button> : <button value={index} onClick={this.removeRow}>Remove</button>}</td>
+            </tr>
+        ))
 
 
 
-     }
-     
+    }
+
     //search function to filter out value equal to Query
     //Query matching
     customFilterFunction(items, query) {
@@ -166,84 +163,79 @@ class Search extends React.Component {
     }
 
 
-    handleoptionsOperatorState(e)
-    {
-	 var id = e.target.id;
+    handleoptionsOperatorState(e) {
+        var id = e.target.id;
 
-      var rowid= id.substring(id.indexOf('_')+1);
-   
-      var queryRows = this.state.rows;
+        var rowid = id.substring(id.indexOf('_') + 1);
 
-      queryRows[rowid].operator=  e.target.value; //this.refs.slOperator.value;
-   
-      this.setState({rows: queryRows});
+        var queryRows = this.state.rows;
+
+        queryRows[rowid].operator = e.target.value; //this.refs.slOperator.value;
+
+        this.setState({ rows: queryRows });
 
 
-	//this.setState({optionsOperatorState:this.refs.slOperator.value},()=>{alert(this.state.optionsOperatorState);console.log("Operator Select");})
-      //alert(this.state.optionsOperatorState);
-     }
-
-    handleoptionsFieldState(e)
-    {
-	 var id = e.target.id;
-
-      var rowid= id.substring(id.indexOf('_')+1);
-   
-      var queryRows = this.state.rows;
-
-      queryRows[rowid].fieldName= e.target.value; //this.refs.slField.value;
-   
-      this.setState({rows: queryRows},()=>{console.log("Field Select");})
-
-	//this.setState({optionsFieldState:this.refs.slField.value},()=>{alert(this.state.optionsFieldState);console.log("Field Select");})
-     // alert(this.state.optionsFieldState);
-     }
-
-    handleoptionsConditionState(e)
-    {
-      var id = e.target.id;
- 
-
-      var rowid= id.substring(id.indexOf('_')+1);
-   
-      var queryRows = this.state.rows;
-
-      queryRows[rowid].condition= e.target.value;  //this.refs.slCondition.value;
-   
-      this.setState({rows: queryRows});
-
-//	this.setState({optionsConditionState:this.refs.slCondition.value},()=>{alert(this.state.optionsConditionState);console.log("Condition Select");})
- //     alert(this.state.optionsConditionState);
-     }
-
-    handleSearchTextChange(e)
-    {
-      var id = e.target.id;
-
-      var rowid= id.substring(id.indexOf('_')+1);
-   
-     var queryRows = this.state.rows;
-
-    
-
-     //var tmprow=  this.state.rows[rowid];
-      
-     //alert(JSON.stringify(queryRows[rowid].value));
-      queryRows[rowid].value=e.target.value;
-     // alert(JSON.stringify(queryRows[rowid].value));
-     // alert(JSON.stringify(queryRows));
-
-   this.setState({rows: queryRows});
-      //this.setState({searchText:e.target.value},()=>{alert(this.state.searchText);console.log("Text Change");})
-      //alert(this.state.searchText);
-     }
-
-    handleChangeDataSource() {
-        this.setState({
-            user: getArticle
-        })
+        //this.setState({optionsOperatorState:this.refs.slOperator.value},()=>{alert(this.state.optionsOperatorState);console.log("Operator Select");})
+        //alert(this.state.optionsOperatorState);
     }
 
+    handleoptionsFieldState(e) {
+        var id = e.target.id;
+
+        var rowid = id.substring(id.indexOf('_') + 1);
+
+        var queryRows = this.state.rows;
+
+        queryRows[rowid].fieldName = e.target.value; //this.refs.slField.value;
+
+        this.setState({ rows: queryRows }, () => { console.log("Field Select"); })
+
+        //this.setState({optionsFieldState:this.refs.slField.value},()=>{alert(this.state.optionsFieldState);console.log("Field Select");})
+        // alert(this.state.optionsFieldState);
+    }
+
+    handleoptionsConditionState(e) {
+        var id = e.target.id;
+
+
+        var rowid = id.substring(id.indexOf('_') + 1);
+
+        var queryRows = this.state.rows;
+
+        queryRows[rowid].condition = e.target.value;  //this.refs.slCondition.value;
+
+        this.setState({ rows: queryRows });
+
+        //	this.setState({optionsConditionState:this.refs.slCondition.value},()=>{alert(this.state.optionsConditionState);console.log("Condition Select");})
+        //     alert(this.state.optionsConditionState);
+    }
+
+    handleSearchTextChange(e) {
+        var id = e.target.id;
+
+        var rowid = id.substring(id.indexOf('_') + 1);
+
+        var queryRows = this.state.rows;
+
+
+
+        //var tmprow=  this.state.rows[rowid];
+
+        //alert(JSON.stringify(queryRows[rowid].value));
+        queryRows[rowid].value = e.target.value;
+        // alert(JSON.stringify(queryRows[rowid].value));
+        // alert(JSON.stringify(queryRows));
+
+        this.setState({ rows: queryRows });
+        //this.setState({searchText:e.target.value},()=>{alert(this.state.searchText);console.log("Text Change");})
+        //alert(this.state.searchText);
+    }
+
+    handleChangeDataSource = () => {
+        this.setState({
+            user: this.getArticle()
+        })
+    }
     handleChangeFrom(date) {
         this.setState({
             startDateFrom: date
@@ -274,12 +266,134 @@ class Search extends React.Component {
         var result = JSON.stringify(data);
         var dateFilter = JSON.parse(result);
 
-        var dateFilterData = dateFilter.filter(function (a) {
-            return ((parseInt(a.year) > dateFrom) && (parseInt(a.year) < dateTo))
+        var dataFilterYear = dateFilter.filter(function (a) {
+
+            return ((parseInt(a.year) >= dateFrom) && (parseInt(a.year) <= dateTo))
+
         });
+        return dataFilterYear;
+    }
+    /*Data is after date filter query
+    rows is option for search */
 
 
-        return dateFilterData;
+
+    dataFilterAll(data, rows) {
+
+        let optionFilterData = [];
+        optionFilterData.length = 0;
+
+        for (var row = 0; row < rows.length; row++) {
+            switch (rows[row].fieldName) {
+                case 'Author':
+
+                    var dateFilterData2 = data.filter(function (a) {
+
+
+
+                        if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.author.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
+                            console.log("author filter:", a);
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+
+                        if ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.author === rows[row].value)) {
+                            console.log("author filter:", a);
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.author.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
+                            console.log("contain value:", a.author.toLowerCase().includes(rows[row].value));
+                            console.log("author filter:", a);
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+
+                        if ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.author.toLowerCase().trim().startsWith(rows[row].value))) {
+
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        if ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.author.toLowerCase().endsWith(rows[row].value))) {
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        else {
+                            console.log("NO CONDITION FOUND");
+                        }
+
+
+                    });
+
+                    break;
+                case 'Title':
+
+                    var dateFilterData2 = data.filter(function (a) {
+
+
+
+                        if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.title.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
+                            console.log("title filter:", a);
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+
+                        if ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.title === rows[row].value)) {
+                            console.log("title filter:", a);
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.title.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
+                            console.log("contain value:", a.title.toLowerCase().includes(rows[row].value));
+                            console.log("title filter:", a);
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+
+                        if ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.title.toLowerCase().trim().startsWith(rows[row].value))) {
+
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        if ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.title.toLowerCase().endsWith(rows[row].value))) {
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        else {
+                            console.log("NO CONDITION OF TITLE FOUND");
+                        }
+
+
+                    });
+
+                    break;
+
+                default:
+                    return "";
+            }
+        }
+
+
+        console.log("Filter data after Option:");
+        console.log(optionFilterData);
+        return optionFilterData;
+
 
 
     }
@@ -289,9 +403,11 @@ class Search extends React.Component {
 
         this.setState({
 
-            user: this.getArticle
+            user: this.getArticle,
+            rows: this.state.rows
 
         });
+
 
         console.log("dateFrom:", this.state.startDateFrom.year());
         console.log("dateTo:", this.state.startDateTo.year());
@@ -299,9 +415,18 @@ class Search extends React.Component {
 
         var yearFrom = parseInt(this.state.startDateFrom.year());
         var yearTo = parseInt(this.state.startDateTo.year());
-        var dataFilter = this.dateFilterQuery(this.state.user, yearFrom, yearTo);
+        var rows = this.state.rows;
 
-        console.log("test data filter: ", dataFilter);
+        var dataDateFilter = this.dateFilterQuery(this.state.user, yearFrom, yearTo);
+        console.log("rows length:", rows.length, "row value: ", rows.value);
+        if (rows.length == 1 && typeof rows.value == 'undefined') {
+            var dataFilter = dataDateFilter;
+        }
+        else {
+            dataFilter = this.dataFilterAll(dataDateFilter, rows);
+        }
+        console.log("Data filter: ", dataFilter);
+
         this.setState({
 
             user: dataFilter
@@ -321,43 +446,26 @@ class Search extends React.Component {
         this.props.filterByColumn(this.state.query, this.props.year)
     }
 
-    addRow(){
+    addRow() {
         var rows = this.state.rows;
-      // rows:[{"fieldName":"","condition":"","value":"","operator":""}]
 
-/*
-var istemprow = rows.map(function(q){
-      return (q.fieldName);
-    });
+        var strval = "";
+        if (rows.length >= 1) {
+            strval = '{"fieldName":"Author","condition":"Contains","value":"","operator":"And"}';
+        }
+        else {
+            strval = '{"fieldName":"Author","condition":"Contains","value":"","operator":""}';
+        }
+        rows.push(JSON.parse(strval));
+        this.setState({ rows: rows });
 
-      
-      //row.length=1 and fieldName=="" remove
-	if (rows.length==1 && istemprow.toString()=="")
-	{
-	   rows.splice(0,1);
-	   this.setState({rows: rows});
-           this.setState({optionsOperatorState:"And"});
-         }
-*/
-	   var strval="";
-        if (rows.length>=1)
-	{
-           strval= '{"fieldName":"Author","condition":"Contains","value":"","operator":"And"}';
-         }
-        else
-        {
-           strval= '{"fieldName":"Author","condition":"Contains","value":"","operator":""}';
-         }
-           rows.push(JSON.parse(strval));
-           this.setState({rows: rows});
-        
     }
 
-    removeRow(e){	
-       var ind= e.target.value;
+    removeRow(e) {
+        var ind = e.target.value;
         var rows = this.state.rows;
-	rows.splice(ind,1);
-        this.setState({rows: rows});        
+        rows.splice(ind, 1);
+        this.setState({ rows: rows });
     }
 
     componentDidMount() {
@@ -365,7 +473,7 @@ var istemprow = rows.map(function(q){
         this.setState({
             user: this.getArticle()
         })
-                
+
     }
     componentWillUnmount() {
         this.setState({
@@ -447,12 +555,12 @@ var istemprow = rows.map(function(q){
                         <Row>
                         </Row>
                         <Row>
-			    <Col sm={1} md={1}>
+                            <Col sm={1} md={1}>
                                 Description:
                             </Col>
                             <Col sm={3} md={9}>
-                  		{JSON.stringify(this.state.rows, null, 2) }
-			    </Col>
+                                {JSON.stringify(this.state.rows, null, 2)}
+                            </Col>
                         </Row>
                         <Row>
                             <Col sm={1} md={1}>
@@ -460,31 +568,36 @@ var istemprow = rows.map(function(q){
                             </Col>
                             <Col sm={3} md={3}>
                                 <DatePicker ref="dateFrom" className='btn btn-default'
+                                    dateFormat="DD-MM-YYYY"
                                     selected={this.state.startDateFrom}
                                     onChange={this.handleChangeFrom}
                                 />
                             </Col>
                             <Col sm={1} md={1}>To: </Col>
                             <Col sm={3} md={3}><DatePicker ref="dateTo" className='btn btn-default'
+                                dateFormat="DD-MM-YYYY"
                                 selected={this.state.startDateTo}
                                 onChange={this.handleChangeTo}
                             /></Col>
-                            <Col sm={2} md={2}>
+                            <Col sm={1} md={1}>
                                 <Button onClick={this.searchChange}>Filter</Button>
+                            </Col>
+                            <Col sm={1} md={1}>
+                                <Button onClick={this.handleChangeDataSource}>Cancle</Button>
                             </Col>
                         </Row>
                     </Grid>
-		 
+
                 </div>
 
-		<div>
-		    <table>
-		         <tbody>
-			   {this.getQueryList()}                         
-			 </tbody>
-		    </table>
+                <div>
+                    <table>
+                        <tbody>
+                            {this.getQueryList()}
+                        </tbody>
+                    </table>
 
-		</div>
+                </div>
 
                 <div className="container clearfix">
 
@@ -511,10 +624,6 @@ var istemprow = rows.map(function(q){
                         externalCurrentPage={this.props.currentPage}
                         styleConfig={styleConfig}
 
-                    /*  { useCustomFilterer={true}
-                      customFilterer={this.customFilterFunction}
-                      useCustomFilterComponent={true}
-                      customFilterComponent={this.customFilterComponent} }*/
 
                     />
 
@@ -528,3 +637,7 @@ var istemprow = rows.map(function(q){
     }
 }
 module.exports = Search;
+// this.Then(/^Filter all data $/, function(callback) {
+
+//     callback.pending();
+//   });

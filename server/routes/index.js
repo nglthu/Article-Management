@@ -2,6 +2,7 @@ var express = require("express")
 var router = express.Router();
 
 import {getIndex} from "../handlers/indexHandler"
+require('child_process');
 
 // fires before entring the router continuation block
 router.use(
