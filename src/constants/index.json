@@ -5,9 +5,16 @@
     "collectionName":"articles",
     "mongoURL":"mongodb://mongo/SERLER",
     "urlData":"http://localhost:3000/",
-    "urlUserAdmin":"http://localhost:3000/userGetdata"
+    "urlUserAdmin":"http://localhost:3000/userGetdata",
+    "articleStatus1":"To be Moderated",
+    "articleStatus2":"Accepted",
+    "articleStatus3":"Rejected",
+    "articleStatus4":"Analysis Complete",
+    "articleStatus5":"Partially Analysed",
+    "articlesStatusAll":"All Article Status"
 
     
+
 
 }
 
