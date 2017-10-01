@@ -71,7 +71,8 @@
     "react-bootstrap-navbar":"^1.1.0",
     "react-native":"^0.48.3",
     "underscore": "^1.8.3",
-    "object-squish":"^1.1.0"
+    "object-squish":"^1.1.0",
+    "cucumber": "^2.x"
    
     
     
