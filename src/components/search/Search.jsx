@@ -383,68 +383,161 @@ class Search extends React.Component {
                     });
 
                     break;
-                
-                    case 'Journal':
+
+                case 'Journal':
+
+                    var dateFilterData2 = data.filter(function (a) {
+
+
+
+                        if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.journal.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
+                            console.log("journal filter:", a);
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+
+                        if ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.journal.toLowerCase() === rows[row].value.toLowerCase())) {
+                            console.log("journal filter:", a);
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.journal.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
+                            console.log("contain value:", a.journal.toLowerCase().includes(rows[row].value));
+                            console.log("journal filter:", a);
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+
+                        if ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.journal.toLowerCase().trim().startsWith(rows[row].value))) {
+
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        if ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.journal.toLowerCase().endsWith(rows[row].value))) {
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        else {
+                            console.log("NO CONDITION OF JOURNAL FOUND");
+                        }
+
+
+                    });
+
+                    break;
+                case 'Status':
+
+                    var dateFilterData2 = data.filter(function (a) {
+
+                        if ((rows[row].condition === "Contains") && (rows[row].value != 'undefined') && (a.status.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
+                            console.log("status filter:", a);
+                            console.log("status value:", rows[row].value);
+                            optionFilterData.push(a);
+                            return a;
+                            
+                        }
+
+
+                        if ((rows[row].condition === "Isequalto") && (rows[row].value != 'undefined') && (a.status.toLowerCase() === rows[row].value.toLowerCase())) {
+                            console.log("journal filter:", a);
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != 'undefined') && (a.status.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
+                            console.log("contain value:", a.journal.toLowerCase().includes(rows[row].value));
+                            console.log("status filter:", a);
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+
+                        if ((rows[row].condition === "Beginswith") && (rows[row].value != 'undefined') && (a.status.toLowerCase().trim().startsWith(rows[row].value))) {
+
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        if ((rows[row].condition === "Endswith") && (rows[row].value != 'undefined') && (a.status.toLowerCase().endsWith(rows[row].value))) {
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        else {
+                            console.log("NO CONDITION OF STATUS FOUND");
+                        }
+
+
+                    });
+
+                    break;
+                    case 'DOI':
                     
                                         var dateFilterData2 = data.filter(function (a) {
                     
-                   
-                    
-                                            if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.journal.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
-                                                console.log("journal filter:", a);
+                                            if ((rows[row].condition === "Contains") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
+                                                console.log("doi filter:", a);
+                                                console.log("doi value:", rows[row].value);
                                                 optionFilterData.push(a);
                                                 return a;
+                                                
                                             }
                     
                     
-                                            if ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.journal.toLowerCase() === rows[row].value.toLowerCase())) {
-                                                console.log("journal filter:", a);
-                    
-                                                optionFilterData.push(a);
-                                                return a;
-                                            }
-                    
-                                            if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.journal.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
-                                                console.log("contain value:", a.journal.toLowerCase().includes(rows[row].value));
-                                                console.log("journal filter:", a);
-                                                optionFilterData.push(a);
-                                                return a;
-                                            }
-                    
-                    
-                                            if ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.journal.toLowerCase().trim().startsWith(rows[row].value))) {
-                    
+                                            if ((rows[row].condition === "Isequalto") && (rows[row].value != 'undefined') && (a.doi.toLowerCase() === rows[row].value.toLowerCase())) {
+                                                console.log("doi filter:", a);
                     
                                                 optionFilterData.push(a);
                                                 return a;
                                             }
                     
-                                            if ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.journal.toLowerCase().endsWith(rows[row].value))) {
+                                            if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
+                                                console.log("contain value:", a.doi.toLowerCase().includes(rows[row].value));
+                                                console.log("status filter:", a);
+                                                optionFilterData.push(a);
+                                                return a;
+                                            }
+                    
+                    
+                                            if ((rows[row].condition === "Beginswith") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().trim().startsWith(rows[row].value))) {
+                    
+                    
+                                                optionFilterData.push(a);
+                                                return a;
+                                            }
+                    
+                                            if ((rows[row].condition === "Endswith") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().endsWith(rows[row].value))) {
                     
                                                 optionFilterData.push(a);
                                                 return a;
                                             }
                     
                                             else {
-                                                console.log("NO CONDITION OF JOURNAL FOUND");
+                                                console.log("NO CONDITION OF DOI FOUND");
                                             }
                     
                     
                                         });
                     
                                         break;
-
                 default:
                     return "";
             }
         }
 
 
-        console.log("Filter data after Option:");
-        console.log(optionFilterData);
         return optionFilterData;
-
-
 
     }
     //TODO: Keep here to work on the search option for date
