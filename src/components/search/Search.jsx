@@ -94,9 +94,11 @@ class Search extends React.Component {
     getQueryList() {
 
         return this.state.rows.map((query, index) => (
+
             <tr key={index}>
                 <td> {index == 0 ? '' : <select id={'ddOperator_' + index} value={query.operator} onChange={this.handleoptionsOperatorState.bind(this)} ref="slOperator">
-                    <option value="And">And</option><option value="Or">Or</option>
+                    <option value="Or">Or</option>
+                    <option value="And">And</option>
                 </select>}
                 </td>
                 <td>
@@ -273,10 +275,13 @@ class Search extends React.Component {
         });
         return dataFilterYear;
     }
-    /*Data is after date filter query
-    rows is option for search */
-
-
+    
+    uniqueRecord(data) {
+        return (data.filter(function (item, pos) {
+            return data.indexOf(item) == pos;
+        })
+        )
+    }
 
     dataFilterAll(data, rows) {
 
@@ -442,7 +447,7 @@ class Search extends React.Component {
                             console.log("status value:", rows[row].value);
                             optionFilterData.push(a);
                             return a;
-                            
+
                         }
 
 
@@ -482,65 +487,68 @@ class Search extends React.Component {
                     });
 
                     break;
-                    case 'DOI':
-                    
-                                        var dateFilterData2 = data.filter(function (a) {
-                    
-                                            if ((rows[row].condition === "Contains") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
-                                                console.log("doi filter:", a);
-                                                console.log("doi value:", rows[row].value);
-                                                optionFilterData.push(a);
-                                                return a;
-                                                
-                                            }
-                    
-                    
-                                            if ((rows[row].condition === "Isequalto") && (rows[row].value != 'undefined') && (a.doi.toLowerCase() === rows[row].value.toLowerCase())) {
-                                                console.log("doi filter:", a);
-                    
-                                                optionFilterData.push(a);
-                                                return a;
-                                            }
-                    
-                                            if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
-                                                console.log("contain value:", a.doi.toLowerCase().includes(rows[row].value));
-                                                console.log("status filter:", a);
-                                                optionFilterData.push(a);
-                                                return a;
-                                            }
-                    
-                    
-                                            if ((rows[row].condition === "Beginswith") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().trim().startsWith(rows[row].value))) {
-                    
-                    
-                                                optionFilterData.push(a);
-                                                return a;
-                                            }
-                    
-                                            if ((rows[row].condition === "Endswith") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().endsWith(rows[row].value))) {
-                    
-                                                optionFilterData.push(a);
-                                                return a;
-                                            }
-                    
-                                            else {
-                                                console.log("NO CONDITION OF DOI FOUND");
-                                            }
-                    
-                    
-                                        });
-                    
-                                        break;
+                case 'DOI':
+
+                    var dateFilterData2 = data.filter(function (a) {
+
+                        if ((rows[row].condition === "Contains") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
+                            console.log("doi filter:", a);
+                            console.log("doi value:", rows[row].value);
+                            optionFilterData.push(a);
+                            return a;
+
+                        }
+
+
+                        if ((rows[row].condition === "Isequalto") && (rows[row].value != 'undefined') && (a.doi.toLowerCase() === rows[row].value.toLowerCase())) {
+                            console.log("doi filter:", a);
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
+                            console.log("contain value:", a.doi.toLowerCase().includes(rows[row].value));
+                            console.log("status filter:", a);
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+
+                        if ((rows[row].condition === "Beginswith") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().trim().startsWith(rows[row].value))) {
+
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        if ((rows[row].condition === "Endswith") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().endsWith(rows[row].value))) {
+
+                            optionFilterData.push(a);
+                            return a;
+                        }
+
+                        else {
+                            console.log("NO CONDITION OF DOI FOUND");
+                        }
+
+
+                    });
+
+                    break;
                 default:
                     return "";
             }
         }
 
 
-        return optionFilterData;
+       
+        var dataNoduplicate = this.uniqueRecord(optionFilterData);
+       
+        return dataNoduplicate;
 
     }
-    //TODO: Keep here to work on the search option for date
+
     searchChange() {
 
 
@@ -594,7 +602,9 @@ class Search extends React.Component {
 
         var strval = "";
         if (rows.length >= 1) {
-            strval = '{"fieldName":"Author","condition":"Contains","value":"","operator":"And"}';
+
+            strval = '{"fieldName":"Author","condition":"Contains","value":"","operator":"Or"}';
+
         }
         else {
             strval = '{"fieldName":"Author","condition":"Contains","value":"","operator":""}';
