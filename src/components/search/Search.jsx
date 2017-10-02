@@ -20,6 +20,7 @@ import { DefaultModules } from 'griddle-render';
 import { TextInput, Input } from 'react-native';
 import $ from 'jquery'
 //import {cucumber} from "cucumber";
+//mport { NavBar } from './NavBar.js';
 
 
 const { RowDefinition, ColumnDefinition } = DefaultModules
@@ -88,6 +89,7 @@ class Search extends React.Component {
         this.addRow = this.addRow.bind(this);
         this.removeRow = this.removeRow.bind(this);
         this.getQueryList = this.getQueryList.bind(this);
+        this.getTxtSave=  this.getTxtSave.bind(this);
 
     }
 
@@ -275,7 +277,7 @@ class Search extends React.Component {
         });
         return dataFilterYear;
     }
-    
+
     uniqueRecord(data) {
         return (data.filter(function (item, pos) {
             return data.indexOf(item) == pos;
@@ -542,9 +544,9 @@ class Search extends React.Component {
         }
 
 
-       
+
         var dataNoduplicate = this.uniqueRecord(optionFilterData);
-       
+
         return dataNoduplicate;
 
     }
@@ -644,6 +646,108 @@ class Search extends React.Component {
         })
     }
 
+
+    //////////////////////USER PRESS
+    getUserID(txt_user) {
+        //alert(txt_user);
+        fetch(config.urlLoginUsername, {
+            method: "post",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+
+            //make sure to serialize your JSON body
+            body: JSON.stringify({
+                username: txt_user
+                //  password: myPassword
+            })
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then((json) => {
+                this.setState({
+                    state_getUserId: json,
+
+                })
+            });
+
+        //alert(JSON.stringify(this.state.state_getUserId));
+
+        //alert(text);
+        //const data = {foo:1, bar:2};
+        // fetch(`http://localhost:3000/getUserId?foo=${data.foo}&bar=${data.bar}`, {
+        //   method: "GET",
+        //   headers: headers,   
+        //   body:body
+        // })
+    }
+
+    getTxtLogin() {
+        var text = this.refs.txt_login.value;
+        this.setState({
+            state_getUserId: this.getUserID(text)
+        })
+    }
+
+
+    getTxtSave() {
+
+        //lert("dateFrom:" + this.state.startDateFrom.format("DD-MM-YYYY"));
+        //alert("dateTo:" + this.state.startDateTo.format("DD-MM-YYYY"));
+        //console.log("rows length:", rows.length, "row value: ", rows.value);
+        // alert("description:" + JSON.stringify(this.state.rows, null, 2));
+        
+        var rows = this.state.rows;
+
+        //Conversion of string to JSON object 
+        //console.log(JSON.parse(JSON.stringify(this.state.rows, null, 2)));
+
+           
+        fetch(config.insertSaveSearch, {
+            method: "post",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+
+            //make sure to serialize your JSON body
+            body: JSON.stringify({
+                userID: JSON.stringify(this.state.state_getUserId),
+                description:JSON.stringify(this.state.rows, null, 2),
+                savetime: moment().format('HH:mm:ss a'),
+                savedate: moment().format('DD-MM-YYYY'),
+                datelasttring: this.state.startDateFrom.format("DD-MM-YYYY") + "->" + this.state.startDateFrom.format("DD-MM-YYYY"),
+                SearchValue: JSON.stringify(this.state.rows, null, 2)
+            })
+        })
+        .then((response) => {
+          
+            return response.json()
+        })
+        .then((json) => {
+            this.setState({
+                state_description : json,
+
+            })
+        })
+        
+        //console.log(JSON.parse(JSON.stringify(this.state.state_description)) );
+    
+        //let optionFilterData = [];
+        // for (var row = 0; row < rows.length; row++)
+        // {   
+        //     console.log("---------- row:" + row);
+        //     console.log(rows[row].fieldName);
+        //     console.log(rows[row].condition);
+        //     console.log(rows[row].value);
+        //     console.log(rows[row].operator);
+        //     optionFilterData.push("fieldName:"+ rows[row].fieldName);
+        // }
+    }
+
+
     render() {
 
 
@@ -691,7 +795,18 @@ class Search extends React.Component {
 
 
             <section id="page-title">
-                <div style={{ display: 'flex' }}>
+                {/* <NavBar /> */}
+                <p style={{ display: 'flex', justifyContent: 'center' }}>
+                    Username: <input type="text" ref="txt_login" value="tom0110"/>
+                    <button onClick={this.getTxtLogin.bind(this)} > Login</button>
+                    &nbsp; &nbsp; &nbsp; &nbsp;
+                    <button onClick={this.getTxtSave}> Save search</button>
+                    &nbsp; &nbsp; &nbsp; &nbsp;
+                    <button onClick={this.getTxtViewSavedSearch}> View saved search </button>
+                </p>
+
+
+                <div id="grid_searchField" style={{ display: 'flex' }}>
                     <Grid>
                         <Row>
                             <Col sm={2} md={2}>
