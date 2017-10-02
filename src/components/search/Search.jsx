@@ -275,7 +275,7 @@ class Search extends React.Component {
         });
         return dataFilterYear;
     }
-    
+
     uniqueRecord(data) {
         return (data.filter(function (item, pos) {
             return data.indexOf(item) == pos;
@@ -289,262 +289,352 @@ class Search extends React.Component {
         optionFilterData.length = 0;
 
         for (var row = 0; row < rows.length; row++) {
-            switch (rows[row].fieldName) {
-                case 'Author':
 
-                    var dateFilterData2 = data.filter(function (a) {
+            console.log("Operator: ", row, "value:", rows[row].operator);
+            if ((rows[row].operator === 'Or') || (rows[row].operator == '')) {
+                switch (rows[row].fieldName) {
 
+                    case 'Author':
 
+                        var dateFilterData2 = data.filter(function (a) {
 
-                        if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.author.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
-                            console.log("author filter:", a);
-                            optionFilterData.push(a);
-                            return a;
-                        }
 
 
-                        if ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.author === rows[row].value)) {
-                            console.log("author filter:", a);
+                            if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.author.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
+                                console.log("author filter:", a);
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
 
-                        if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.author.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
-                            console.log("contain value:", a.author.toLowerCase().includes(rows[row].value));
-                            console.log("author filter:", a);
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                            if ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.author === rows[row].value)) {
+                                console.log("author filter:", a);
 
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                        if ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.author.toLowerCase().trim().startsWith(rows[row].value))) {
+                            if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.author.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
+                                console.log("contain value:", a.author.toLowerCase().includes(rows[row].value));
+                                console.log("author filter:", a);
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                            if ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.author.toLowerCase().trim().startsWith(rows[row].value))) {
 
-                        if ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.author.toLowerCase().endsWith(rows[row].value))) {
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                        else {
-                            console.log("NO CONDITION FOUND");
-                        }
+                            if ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.author.toLowerCase().endsWith(rows[row].value))) {
 
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                    });
+                            else {
+                                console.log("NO CONDITION FOUND");
+                            }
 
-                    break;
-                case 'Title':
 
-                    var dateFilterData2 = data.filter(function (a) {
+                        });
 
+                        break;
+                    case 'Title':
 
+                        var dateFilterData2 = data.filter(function (a) {
 
-                        if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.title.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
-                            console.log("title filter:", a);
-                            optionFilterData.push(a);
-                            return a;
-                        }
 
 
-                        if ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.title === rows[row].value)) {
-                            console.log("title filter:", a);
+                            if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.title.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
+                                console.log("title filter:", a);
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
 
-                        if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.title.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
-                            console.log("contain value:", a.title.toLowerCase().includes(rows[row].value));
-                            console.log("title filter:", a);
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                            if ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.title === rows[row].value)) {
+                                console.log("title filter:", a);
 
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                        if ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.title.toLowerCase().trim().startsWith(rows[row].value))) {
+                            if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.title.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
+                                console.log("contain value:", a.title.toLowerCase().includes(rows[row].value));
+                                console.log("title filter:", a);
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                            if ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.title.toLowerCase().trim().startsWith(rows[row].value))) {
 
-                        if ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.title.toLowerCase().endsWith(rows[row].value))) {
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                        else {
-                            console.log("NO CONDITION OF TITLE FOUND");
-                        }
+                            if ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.title.toLowerCase().endsWith(rows[row].value))) {
 
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                    });
+                            else {
+                                console.log("NO CONDITION OF TITLE FOUND");
+                            }
 
-                    break;
 
-                case 'Journal':
+                        });
 
-                    var dateFilterData2 = data.filter(function (a) {
+                        break;
 
+                    case 'Journal':
 
+                        var dateFilterData2 = data.filter(function (a) {
 
-                        if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.journal.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
-                            console.log("journal filter:", a);
-                            optionFilterData.push(a);
-                            return a;
-                        }
 
 
-                        if ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.journal.toLowerCase() === rows[row].value.toLowerCase())) {
-                            console.log("journal filter:", a);
+                            if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.journal.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
+                                console.log("journal filter:", a);
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
 
-                        if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.journal.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
-                            console.log("contain value:", a.journal.toLowerCase().includes(rows[row].value));
-                            console.log("journal filter:", a);
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                            if ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.journal.toLowerCase() === rows[row].value.toLowerCase())) {
+                                console.log("journal filter:", a);
 
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                        if ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.journal.toLowerCase().trim().startsWith(rows[row].value))) {
+                            if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.journal.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
+                                console.log("contain value:", a.journal.toLowerCase().includes(rows[row].value));
+                                console.log("journal filter:", a);
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                            if ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.journal.toLowerCase().trim().startsWith(rows[row].value))) {
 
-                        if ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.journal.toLowerCase().endsWith(rows[row].value))) {
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                        else {
-                            console.log("NO CONDITION OF JOURNAL FOUND");
-                        }
+                            if ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.journal.toLowerCase().endsWith(rows[row].value))) {
 
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                    });
+                            else {
+                                console.log("NO CONDITION OF JOURNAL FOUND");
+                            }
 
-                    break;
-                case 'Status':
 
-                    var dateFilterData2 = data.filter(function (a) {
+                        });
 
-                        if ((rows[row].condition === "Contains") && (rows[row].value != 'undefined') && (a.status.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
-                            console.log("status filter:", a);
-                            console.log("status value:", rows[row].value);
-                            optionFilterData.push(a);
-                            return a;
+                        break;
+                    case 'Status':
 
-                        }
+                        var dateFilterData2 = data.filter(function (a) {
 
+                            if ((rows[row].condition === "Contains") && (rows[row].value != 'undefined') && (a.status.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
+                                console.log("status filter:", a);
+                                console.log("status value:", rows[row].value);
+                                optionFilterData.push(a);
+                                return a;
 
-                        if ((rows[row].condition === "Isequalto") && (rows[row].value != 'undefined') && (a.status.toLowerCase() === rows[row].value.toLowerCase())) {
-                            console.log("journal filter:", a);
+                            }
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
 
-                        if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != 'undefined') && (a.status.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
-                            console.log("contain value:", a.journal.toLowerCase().includes(rows[row].value));
-                            console.log("status filter:", a);
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                            if ((rows[row].condition === "Isequalto") && (rows[row].value != 'undefined') && (a.status.toLowerCase() === rows[row].value.toLowerCase())) {
+                                console.log("journal filter:", a);
 
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                        if ((rows[row].condition === "Beginswith") && (rows[row].value != 'undefined') && (a.status.toLowerCase().trim().startsWith(rows[row].value))) {
+                            if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != 'undefined') && (a.status.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
+                                console.log("contain value:", a.journal.toLowerCase().includes(rows[row].value));
+                                console.log("status filter:", a);
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                            if ((rows[row].condition === "Beginswith") && (rows[row].value != 'undefined') && (a.status.toLowerCase().trim().startsWith(rows[row].value))) {
 
-                        if ((rows[row].condition === "Endswith") && (rows[row].value != 'undefined') && (a.status.toLowerCase().endsWith(rows[row].value))) {
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                        else {
-                            console.log("NO CONDITION OF STATUS FOUND");
-                        }
+                            if ((rows[row].condition === "Endswith") && (rows[row].value != 'undefined') && (a.status.toLowerCase().endsWith(rows[row].value))) {
 
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                    });
+                            else {
+                                console.log("NO CONDITION OF STATUS FOUND");
+                            }
 
-                    break;
-                case 'DOI':
 
-                    var dateFilterData2 = data.filter(function (a) {
+                        });
 
-                        if ((rows[row].condition === "Contains") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
-                            console.log("doi filter:", a);
-                            console.log("doi value:", rows[row].value);
-                            optionFilterData.push(a);
-                            return a;
+                        break;
+                    case 'DOI':
 
-                        }
+                        var dateFilterData2 = data.filter(function (a) {
 
+                            if ((rows[row].condition === "Contains") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
+                                console.log("doi filter:", a);
+                                console.log("doi value:", rows[row].value);
+                                optionFilterData.push(a);
+                                return a;
 
-                        if ((rows[row].condition === "Isequalto") && (rows[row].value != 'undefined') && (a.doi.toLowerCase() === rows[row].value.toLowerCase())) {
-                            console.log("doi filter:", a);
+                            }
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
 
-                        if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
-                            console.log("contain value:", a.doi.toLowerCase().includes(rows[row].value));
-                            console.log("status filter:", a);
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                            if ((rows[row].condition === "Isequalto") && (rows[row].value != 'undefined') && (a.doi.toLowerCase() === rows[row].value.toLowerCase())) {
+                                console.log("doi filter:", a);
 
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                        if ((rows[row].condition === "Beginswith") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().trim().startsWith(rows[row].value))) {
+                            if ((rows[row].condition === "Doesnotcontains") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1)) {
+                                console.log("contain value:", a.doi.toLowerCase().includes(rows[row].value));
+                                console.log("status filter:", a);
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                            if ((rows[row].condition === "Beginswith") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().trim().startsWith(rows[row].value))) {
 
-                        if ((rows[row].condition === "Endswith") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().endsWith(rows[row].value))) {
 
-                            optionFilterData.push(a);
-                            return a;
-                        }
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                        else {
-                            console.log("NO CONDITION OF DOI FOUND");
-                        }
+                            if ((rows[row].condition === "Endswith") && (rows[row].value != 'undefined') && (a.doi.toLowerCase().endsWith(rows[row].value))) {
 
+                                optionFilterData.push(a);
+                                return a;
+                            }
 
-                    });
+                            else {
+                                console.log("NO CONDITION OF DOI FOUND");
+                            }
 
-                    break;
-                default:
-                    return "";
+
+                        });
+
+                        break;
+                    default:
+                        return "";
+                }
+            }
+            else {
+
+                console.log("testing for AND case:");
+                console.log("AND data filter:", optionFilterData);
+                var dateFilterData2 = optionFilterData.filter(function (a) {
+                    console.log("row:", row, "fieldName:", rows[row].fieldName);
+                    switch (rows[row].fieldName) {
+
+                        case 'Author':
+                            return (
+
+                                (rows[row].condition === "Contains") && (rows[row].value != "") && (a.author.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0))
+                                || ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.author === rows[row].value))
+                                || ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.author.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1))
+                                || ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.author.toLowerCase().trim().startsWith(rows[row].value)))
+                                || ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.author.toLowerCase().endsWith(rows[row].value)))
+
+
+                            break;
+                        case 'Title':
+
+                            return (
+
+                                (rows[row].condition === "Contains") && (rows[row].value != "") && (a.title.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0))
+                                || ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.title === rows[row].value))
+                                || ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.title.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1))
+                                || ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.title.toLowerCase().trim().startsWith(rows[row].value)))
+                                || ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.title.toLowerCase().endsWith(rows[row].value)))
+
+
+                            break;
+                        case 'Journal':
+
+                            return (
+
+                                (rows[row].condition === "Contains") && (rows[row].value != "") && (a.journal.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0))
+                                || ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.journal === rows[row].value))
+                                || ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.journal.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1))
+                                || ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.journal.toLowerCase().trim().startsWith(rows[row].value)))
+                                || ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.journal.toLowerCase().endsWith(rows[row].value)))
+
+
+                            break;
+
+                        case 'Status':
+
+                            return (
+
+                                (rows[row].condition === "Contains") && (rows[row].value != "") && (a.status.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0))
+                                || ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.status === rows[row].value))
+                                || ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.status.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1))
+                                || ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.status.toLowerCase().trim().startsWith(rows[row].value)))
+                                || ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.status.toLowerCase().endsWith(rows[row].value)))
+
+
+                            break;
+                        case 'DOI':
+
+                            return (
+
+                                (rows[row].condition === "Contains") && (rows[row].value != "") && (a.doi.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0))
+                                || ((rows[row].condition === "Isequalto") && (rows[row].value != "") && (a.doi === rows[row].value))
+                                || ((rows[row].condition === "Doesnotcontains") && (rows[row].value != "") && (a.doi.toLowerCase().indexOf(rows[row].value.toLowerCase()) === -1))
+                                || ((rows[row].condition === "Beginswith") && (rows[row].value != "") && (a.doi.toLowerCase().trim().startsWith(rows[row].value)))
+                                || ((rows[row].condition === "Endswith") && (rows[row].value != "") && (a.doi.toLowerCase().endsWith(rows[row].value)))
+
+
+                            break;
+
+
+                        default:
+                            return "";
+
+                    }
+                    optionFilterData = dateFilterData2;
+
+
+                });
+              
+
+                optionFilterData = dateFilterData2;
+                console.log("AND data filter after performance:", optionFilterData);
+
+
             }
         }
 
 
-       
+
         var dataNoduplicate = this.uniqueRecord(optionFilterData);
-       
+
         return dataNoduplicate;
 
     }
