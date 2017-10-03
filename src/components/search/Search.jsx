@@ -65,6 +65,8 @@ class Search extends React.Component {
                     user: json
                 })
             });
+
+           // console.log((this.state.user));
     }
     constructor(props) {
         super(props)
@@ -79,7 +81,10 @@ class Search extends React.Component {
             optionsOperatorState: '',
             optionsFieldState: 'Author',
             optionsConditionState: 'Contains',
-            searchText: ''
+            searchText: '',
+            listSaveSearch: {}
+            
+            
         }
 
         this.searchChange = this.searchChange.bind(this);
@@ -157,7 +162,9 @@ class Search extends React.Component {
     getInitialState() {
         return {
             query: "",
-            user: this.getArticle
+            user: this.getArticle,
+            listSaveSearch: this.getTxtViewSavedSearch
+    
         };
     }
     resetName(event) {
@@ -631,9 +638,16 @@ class Search extends React.Component {
 
     }
     componentWillUnmount() {
+        // getTxtViewSavedSearch().then(function (fieldName) {
+        //     this.setState({
+        //       fieldName
+        //     })
+        //   })
+        
         this.setState({
             user: this.getArticle()
         })
+
     }
     searchChangeNew(e, value) {
         console.log(e, value);
@@ -684,6 +698,38 @@ class Search extends React.Component {
         // })
     }
 
+
+    getTxtViewSavedSearch(){
+        console.log(this.state.state_getUserId);
+        fetch(config.viewSaveSearch,{
+            method: "post",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+
+               userID: this.state.state_getUserId
+
+              
+            })
+        })
+
+        .then((response) => {
+           
+            return response.json()
+        })
+        .then((json) => {
+
+            //return json.description[0].fieldName;
+
+            this.setState({
+                listSaveSearch: json
+            })
+        });
+       console.log(this.state.listSaveSearch);
+    }
+
     getTxtLogin() {
         var text = this.refs.txt_login.value;
         this.setState({
@@ -714,12 +760,13 @@ class Search extends React.Component {
 
             //make sure to serialize your JSON body
             body: JSON.stringify({
-                userID: JSON.stringify(this.state.state_getUserId),
-                description:JSON.stringify(this.state.rows, null, 2),
+                userID: this.state.state_getUserId,
+                description:this.state.rows,
+                SearchValue: JSON.stringify(this.state.rows, null, 2),
                 savetime: moment().format('HH:mm:ss a'),
                 savedate: moment().format('DD-MM-YYYY'),
-                datelasttring: this.state.startDateFrom.format("DD-MM-YYYY") + "->" + this.state.startDateFrom.format("DD-MM-YYYY"),
-                SearchValue: JSON.stringify(this.state.rows, null, 2)
+                datelasttring: this.state.startDateFrom.format("DD-MM-YYYY") + "->" + this.state.startDateFrom.format("DD-MM-YYYY")
+                
             })
         })
         .then((response) => {
@@ -770,7 +817,20 @@ class Search extends React.Component {
         }, {
             columnName: 'status',
             displayName: 'Status'
-        },
+        }
+        ];
+
+        //setting
+        const columnMeta2 = [{
+            columnName: 'fieldName',
+            displayName: 'Description'
+        }, {
+            columnName: 'savedate',
+            displayName: 'Save Date'
+        }, {
+            columnName: 'savetime',
+            displayName: 'Save Time'
+        }  
         ];
 
 
@@ -797,12 +857,12 @@ class Search extends React.Component {
             <section id="page-title">
                 {/* <NavBar /> */}
                 <p style={{ display: 'flex', justifyContent: 'center' }}>
-                    Username: <input type="text" ref="txt_login" value="tom0110"/>
+                    Username: <input type="text" ref="txt_login" value="mary0220"/>
                     <button onClick={this.getTxtLogin.bind(this)} > Login</button>
                     &nbsp; &nbsp; &nbsp; &nbsp;
                     <button onClick={this.getTxtSave}> Save search</button>
                     &nbsp; &nbsp; &nbsp; &nbsp;
-                    <button onClick={this.getTxtViewSavedSearch}> View saved search </button>
+                    <button onClick={this.getTxtViewSavedSearch.bind(this)}> View saved search </button>
                 </p>
 
 
@@ -898,12 +958,49 @@ class Search extends React.Component {
 
                 </div>
 
+
+                <div className="container clearfix">
+
+                    <h1>List of saved search:</h1>
+                    <Griddle
+
+                        results={this.state.listSaveSearch}
+                        showFilter={false}
+                        showSettings={true}
+                        columns={["fieldName","savedate","savetime"]}
+                        columnMetadata={columnMeta2}
+                        tableClassName={'table table-bordered table-striped table-hover '}
+                        useGriddleStyles={true}
+                        settingsToggleClassName='btn btn-default'
+                        customPagerComponent={BootstrapPager}
+                        resultsPerPage={50}
+                        externalChangeSort={this.changeSort}
+                        externalSetFilter={this.setFilter}
+                        externalSortColumn={this.props.sortColumn}
+                        externalSortAscending={this.props.sortAscending}
+                        externalSetPageSize={this.setPageSize}
+                        externalMaxPage={this.props.maxPages}
+                        externalCurrentPage={this.props.currentPage}
+                    >
+              </Griddle>
+                </div>  
+
+{/* Error
+                <ul> 
+                             {this.props.listSaveSearch.map(function(listValue){
+                            return <li>{listValue}</li>;
+                            })}
+                <li>{this.state.fieldName}</li> 
+                
+              </ul> */}
             </section>
 
         )
 
     }
 }
+
+
 module.exports = Search;
 // this.Then(/^Filter all data $/, function(callback) {
 
