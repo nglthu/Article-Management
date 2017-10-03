@@ -298,7 +298,7 @@ class Search extends React.Component {
 
                         var dateFilterData2 = data.filter(function (a) {
 
-
+                                
 
                             if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.author.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
                                 console.log("author filter:", a);
