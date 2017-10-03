@@ -11,9 +11,10 @@
     "articleStatus3":"Rejected",
     "articleStatus4":"Analysis Complete",
     "articleStatus5":"Partially Analysed",
-    "articlesStatusAll":"All Article Status"
-
-    
+    "articlesStatusAll":"All Article Status",
+    "urlLoginUsername":"http://localhost:3000/getUserId",
+    "insertSaveSearch":"http://localhost:3000/insertSaveSearch",
+    "viewSaveSearch":"http://localhost:3000/viewSaveSearch"
 
 
 }
