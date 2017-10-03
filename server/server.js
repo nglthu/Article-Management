@@ -134,25 +134,49 @@ app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function () {
     });
 
 
+    app.post('/viewSaveSearch', function (req, res) {
+        var name= req.body.userID;
+        console.log("-----------viewSaveSearch: "+name)
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+
+            db.collection("savedSearch").find({userID:name},{_id:1, description:1, savetime:1,savedate:1}).toArray(function (err, result) {
+                if (err) throw err;
+                //result = result.replace("\\\\", "");
+                console.log("--------------Already read done!");      
+                console.log(typeof result);
+                result=JSON.stringify(result);
+                console.log("---------------- result:" +  (result) );
+                
+                var data = JSON.parse(result);
+                console.log("---------------data : " + data);
+                
+                res.json(data);
+                db.close();
+            });
+        });
+        
+    });
+
     app.post('/getUserId', function (req, res) {
         
         var name= req.body.username;
-        //console.log("---------------getUsertID : " + name);
+        console.log("---------------getUsertID : " + name);
           
         //import MongoClient from 'mongodb';
         //Connect to the db
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
 
-            db.collection("user_profile").find({LoginName:name},{_id:1} ).limit(1).toArray(function (err, result) {
+            db.collection("user_profile").find({LoginName:name},{_id:1}).limit(1).toArray(function (err, result) {
                 if (err) throw err;
                 
                 
                 result=JSON.stringify(result);
-                console.log("---------------- result:" +  (result) );
+                //console.log("---------------- result:" +  (result) );
                
                 var data = JSON.parse(result);
-                console.log("---------------data : " + data);
+                //console.log("---------------data : " + data);
                 res.json(data) ;
                
                // console.log("----------------function getUserId:" +  JSON.stringify(result) );
@@ -174,10 +198,11 @@ app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function () {
         var items ={
             userID: req.body.userID,
             description:req.body.description,
+            SearchValue: req.body.description,
             savetime: req.body.savetime,
             savedate: req.body.savedate,
-            datelasttring: req.body.datelasttring,
-            SearchValue: req.body.description
+            datelasttring: req.body.datelasttring
+           
         }
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
