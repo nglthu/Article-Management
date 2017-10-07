@@ -1,0 +1,94 @@
+
+
+db.createCollection( "savedSearch",
+{
+validator: { $or:
+[
+{ name: { $type: "string" } },
+
+{
+"description":{ $type: "string" },
+"SearchValue":{
+    [
+{
+"fieldName":{ $type: "string" } ,
+"condition":{ $type: "string" } ,
+"value":{ $type: "string" } ,
+"operator":{ $type: "string" }
+}
+] },
+{ "savedate": { $type: "string" } },
+{ "savetime": { $type: "string" } },
+{ "datelastrun": { $type: "string" } }
+]
+}
+}
+)
+/*JSON object in mongo db*/
+db.createCollection( "savedSearch",
+{
+    validator: { $or:
+        [
+     
+    'name' : { $type: "string" },
+    'description' : { $type: "string" },
+    'SearchValue' : {
+            'fieldName' : { $type: "string" },
+            'condition' : { $type: "string" },
+            'value' : { $type: "string" },
+            'operator':{ $type: "string" }
+        }
+        
+  
+    'saveDate': { $type: "string" },
+    'saveTime': { $type: "string" },
+    'dateLastRun': { $type: "string"}
+]}
+   
+}
+
+)
+
+
+
+trk : [{
+    lat : String,
+    lng : String
+     }]
+
+
+     db.createUser ({
+        "user":"dbTest",
+        "pwd":"testPass",
+        "roles": [
+        { "role":"readWrite", "db":"test" }
+        ]
+        })
+
+
+
+        db.createCollection("savedSearch')
+        db.savedSearch.insert(
+        {
+        name: "squall0330",
+        description: "This is a book",
+        SearchValue :[{
+        fieldName: "article1 " ,
+        condition: " isequal " ,
+        value: "value is searched" ,
+        operator: "And "
+        },
+        {
+        fieldName: "article2 " ,
+        condition: " isequal " ,
+        value: "value is searched" ,
+        operator: "Or "
+        }],
+        
+            savedate : "20/11/2016",
+            savetime : "11pm",
+            datelastring : "Male"
+            }
+        )
+        db.savedSearch.find().pretty()   
+        

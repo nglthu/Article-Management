@@ -50,15 +50,17 @@ class Article extends React.Component {
             })
             .then((json) => {
                 this.setState({
-                    articles: json
+                    articles: json,
+                    allArticles: json,
                 })
             });
     }
+
     constructor(props) {
         super(props)
         this.state = {
             articles: {},
-            userFull: {},
+            allArticles: {},
             startDateFrom: moment(),
             startDateTo: moment(),
             query: '',
@@ -67,20 +69,33 @@ class Article extends React.Component {
 
 
         }
-        this.handleChangeFrom = this.handleChangeFrom.bind(this);
-        this.handleChangeTo = this.handleChangeTo.bind(this);
-        // this.onChange = this.onChange.bind(this);
+      
         this.searchChange = this.searchChange.bind(this);
-        //this.changeFilter = this.changeFilter.bind(this);
-
-        // this.searchChange = this.searchChange.bind();
-
+      
     }
 
 
     dataFilterNotMaching(data, item) {
+        console.log(data);
 
-        return JSON.parse(data).filter(({ status }) => status != item);
+        var result = JSON.stringify(data);
+        var dataphrase = JSON.parse(result);
+       
+        console.log('Data Filter Not Maching:',dataphrase.filter(({ status }) => status != item));
+        return dataphrase.filter(({ status }) => status != item);
+
+
+    }
+
+    dataArticleStatus(data, item) {
+        console.log(data);
+
+        var result = JSON.stringify(data);
+        var dataphrase = JSON.parse(result);
+        
+        console.log('Article Status:',dataphrase.filter(({ status }) => status != item));
+        return dataphrase.filter(({ status }) => status != item);
+
 
     }
 
@@ -88,11 +103,6 @@ class Article extends React.Component {
     customFilterFunction(items, query) {
         return _.filter(items, (item) => {
             var flat = squish(item);
-            console.log("1. Filter Check");
-            console.log(query);
-            var test = false;
-
-
 
             for (var key in flat) {
                 if (String(flat[key]).toLowerCase().indexOf(query.toLowerCase()) >= 0)
@@ -114,28 +124,39 @@ class Article extends React.Component {
     }
     resetName(event) {
         this.setState({
-            articles: event.getArticleFilter
+            articles: event.getArticleFilter()
         });
     }
     searchChange() {
 
-        if (this.refs.status.value === 'PartiallyAnalysed') {
-
-            var selectBoxValue = 'Analysis Complete';
-            console.log('test user wwwwww:');
-
-
-            var userFilter = this.dataFilterNotMaching(this.state.articles, selectBoxValue);
-            console.log('new function filter:');
-            console.log(userFilter);
-
+        if(this.refs.status.value === config.articlesStatusAll){
+            this.setState({
+                articles: this.getArticleFilter()
+    
+            });
+            console.log("status case 1:",this.refs.status.value);
+            console.log("status 1: Log data:", this.status.articles);
         }
+        
         else {
+            if (this.refs.status.value === config.articleStatus5) {
+                
+                            var selectBoxValue = config.articleStatus4;
+                            
+                            var userFilter = this.dataFilterNotMaching(this.state.allArticles, selectBoxValue);
+                            console.log("status case 2:",this.refs.status.value);
+                
+                        
 
-            userFilter = this.customFilterFunction(this.state.articles, this.refs.status.value);
-            console.log(this.refs.status.value);
+            }
+            else{
 
+            userFilter = this.customFilterFunction(this.state.allArticles, this.refs.status.value);
+           
+            console.log("status case 3:",this.refs.status.value);
+            }
         }
+
         this.setState({
             status: this.refs.status.value,
 
@@ -147,44 +168,7 @@ class Article extends React.Component {
 
     }
 
-    handleChangeDataSource() {
-        this.setState({
-            articles: getArticleFilter
-        })
-    }
-
-    handleChangeFrom(date) {
-        this.setState({
-            startDateFrom: date
-
-        });
-        this.toggleCalendar()
-    }
-
-    handleChangeTo(date) {
-        this.setState({
-            startDateTo: date
-
-        });
-        this.toggleCalendar()
-    }
-
-
-
-    toggleCalendar(e) {
-        e && e.preventDefault()
-        this.setState({ isOpen: !this.state.isOpen })
-    }
-
-
-
-    textOnClick(e) {
-        e.stopPropagation();
-    }
-
-    filterText(e) {
-        this.props.filterByColumn(this.state.query, this.props.year)
-    }
+    
 
 
     componentDidMount() {
@@ -198,10 +182,7 @@ class Article extends React.Component {
             articles: this.getArticleFilter()
         })
     }
-    searchChangeNew(e, value) {
-        console.log(e, value);
-        this.props.changeFilter(value);
-    }
+    
     handleClick = () => {
         ReactDOM.findDOMNode(this.refs.status).value = "";
         this.setState({
@@ -258,12 +239,7 @@ class Article extends React.Component {
 
             <section id="page-title">
                 <div style={{ display: 'flex' }}>
-                    {/* <input
-              name='title'
-              placeholder="testing"
-              floatingLabelText='title'
-              onChange={this.searchChangeNew}
-            /> */}
+
 
                 </div>
 
@@ -275,24 +251,16 @@ class Article extends React.Component {
                         </Col>
                         <Col sm={8} md={8}>
 
-
                             <select onChange={this.searchChange} className='btn btn-default' style={boderSet} ref="status" cache={false} >
-                                <option value='All'>All Article Status</option>
-                                <option value='To be Moderated'>To be morderated</option>
-                                <option value='Accepted'>Accepted</option>
-                                <option value='Rejected'>Rejected</option>
-                                <option value='Analysis Complete'>Analysis Complete</option>
-                                <option value='PartiallyAnalysed'>Partially analysed</option>
+                                <option value={config.articlesStatusAll}>{config.articlesStatusAll}</option>
+                                <option value={config.articleStatus1}>{config.articleStatus1}</option>
+                                <option value={config.articleStatus2}>{config.articleStatus2}</option>
+                                <option value={config.articleStatus3}>{config.articleStatus3}</option>
+                                <option value={config.articleStatus4}>{config.articleStatus4}</option>
+                                <option value={config.articleStatus5}>{config.articleStatus5}</option>
 
                             </select>
 
-                            {/* <DropdownButton onClick={this.searchChange} ref="status" cache={false} >
-                                <MenuItem key="1995">1995</MenuItem>
-                                <MenuItem key="2004">2004</MenuItem>
-                                <MenuItem key="2010" active>2010</MenuItem>
-                                <MenuItem divider />
-                                <MenuItem key="2013">2013</MenuItem>
-                            </DropdownButton> } */}
 
                             <Button onClick={this.handleClick}>Cancel Filter of Articles</Button>
                         </Col>
@@ -328,11 +296,6 @@ class Article extends React.Component {
                         externalMaxPage={this.props.maxPages}
                         externalCurrentPage={this.props.currentPage}
                         styleConfig={styleConfig}
-
-                    /*  { useCustomFilterer={true}
-                      customFilterer={this.customFilterFunction}
-                      useCustomFilterComponent={true}
-                      customFilterComponent={this.customFilterComponent} }*/
 
                     />
 

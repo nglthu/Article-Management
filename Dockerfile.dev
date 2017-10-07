@@ -43,6 +43,7 @@ EXPOSE 80
 
 WORKDIR /app
 
+
 # only mounting the package.json file to volume on the container, 
 # so only node_modules will be on the container and not on the host machine
 
@@ -51,3 +52,6 @@ ADD package.json /app
 # to install all the dependencies
 RUN npm install 
 RUN npm cache clean
+# add feature folder to the directory
+ADD features /app/features
+#ADD cucumber-commands.sh /app/cucumber-commands.sh
