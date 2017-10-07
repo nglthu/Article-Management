@@ -21,7 +21,7 @@ import { TextInput, Input } from 'react-native';
 import $ from 'jquery'
 //import {cucumber} from "cucumber";
 //mport { NavBar } from './NavBar.js';
-
+//import '../features/step_definitions/unitTest.js';
 
 const { RowDefinition, ColumnDefinition } = DefaultModules
 
@@ -34,6 +34,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 const config = require('../../constants/index.json');
 var _ = require('underscore');
 var squish = require('object-squish');
+
+
+
 
 var colType = {
     textAlign: "justify"
@@ -308,7 +311,7 @@ class Search extends React.Component {
 
                         var dateFilterData2 = data.filter(function (a) {
 
-
+                                
 
                             if ((rows[row].condition === "Contains") && (rows[row].value != "") && (a.author.toLowerCase().indexOf(rows[row].value.toLowerCase()) >= 0)) {
                                 console.log("author filter:", a);
