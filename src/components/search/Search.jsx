@@ -82,7 +82,7 @@ class Search extends React.Component {
             optionsFieldState: 'Author',
             optionsConditionState: 'Contains',
             searchText: '',
-            listSaveSearch: {}
+            listSaveSearch: []
             
             
         }
@@ -163,7 +163,8 @@ class Search extends React.Component {
         return {
             query: "",
             user: this.getArticle,
-            listSaveSearch: this.getTxtViewSavedSearch
+        //    listSaveSearch: this.getTxtViewSavedSearch,
+            listSaveSearch : []
     
         };
     }
@@ -725,6 +726,9 @@ class Search extends React.Component {
         this.setState({
             user: this.getArticle()
         })
+         this.setState({
+            listSaveSearch: this.getTxtViewSavedSearch()
+        })
 
     }
     componentWillUnmount() {
@@ -771,6 +775,8 @@ class Search extends React.Component {
                 return response.json()
             })
             .then((json) => {
+
+                
                 this.setState({
                     state_getUserId: json,
 
@@ -790,7 +796,7 @@ class Search extends React.Component {
 
 
     getTxtViewSavedSearch(){
-        console.log(this.state.state_getUserId);
+        //console.log(this.state.state_getUserId);
         fetch(config.viewSaveSearch,{
             method: "post",
             headers: {
@@ -811,13 +817,24 @@ class Search extends React.Component {
         })
         .then((json) => {
 
+            //var v_filterJson = [];
             //return json.description[0].fieldName;
+            
+            //console.log(json);
+            //console.log("------" + v_filterJson);
+            //var v_j = json.description.length;
+            // for(var i=0; i < json.length; i++){
 
+            //     console.log(json[i].description.fieldName);
+            // }
             this.setState({
                 listSaveSearch: json
             })
+            console.log("listSaveSearch" + this.state.listSaveSearch);
         });
-       console.log(this.state.listSaveSearch);
+
+        
+      
     }
 
     getTxtLogin() {
@@ -886,6 +903,9 @@ class Search extends React.Component {
 
 
     render() {
+      
+   
+
 
 
         const columnMeta = [{
@@ -912,7 +932,7 @@ class Search extends React.Component {
 
         //setting
         const columnMeta2 = [{
-            columnName: 'fieldName',
+            columnName: 'description',
             displayName: 'Description'
         }, {
             columnName: 'savedate',
@@ -939,6 +959,8 @@ class Search extends React.Component {
                 Table: { border: "2px solid #555 " },
             }
         }
+
+
 
 
         return (
@@ -1057,7 +1079,7 @@ class Search extends React.Component {
                         results={this.state.listSaveSearch}
                         showFilter={false}
                         showSettings={true}
-                        columns={["fieldName","savedate","savetime"]}
+                        columns={["description","savedate","savetime"]}
                         columnMetadata={columnMeta2}
                         tableClassName={'table table-bordered table-striped table-hover '}
                         useGriddleStyles={true}
@@ -1074,15 +1096,7 @@ class Search extends React.Component {
                     >
               </Griddle>
                 </div>  
-
-{/* Error
-                <ul> 
-                             {this.props.listSaveSearch.map(function(listValue){
-                            return <li>{listValue}</li>;
-                            })}
-                <li>{this.state.fieldName}</li> 
-                
-              </ul> */}
+      
             </section>
 
         )

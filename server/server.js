@@ -134,29 +134,75 @@ app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function () {
     });
 
 
-    app.post('/viewSaveSearch', function (req, res) {
-        var name= req.body.userID;
-        console.log("-----------viewSaveSearch: "+name)
-        MongoClient.connect(url, function (err, db) {
-            if (err) throw err;
+    // app.post('/viewSaveSearch', function (req, res) {
+    //     var name= req.body.userID;
+    //     console.log("-----------viewSaveSearch: "+name)
+    //     MongoClient.connect(url, function (err, db) {
+    //         if (err) throw err;
 
-            db.collection("savedSearch").find({userID:name},{_id:1, description:1, savetime:1,savedate:1}).toArray(function (err, result) {
-                if (err) throw err;
-                //result = result.replace("\\\\", "");
-                console.log("--------------Already read done!");      
-                console.log(typeof result);
-                result=JSON.stringify(result);
-                console.log("---------------- result:" +  (result) );
+    //         db.collection("savedSearch").find({userID:name},{_id:1, description:1, savetime:1,savedate:1}).toArray(function (err, result) {
+    //             if (err) throw err;
+    //             //result = result.replace("\\\\", "");
+    //             console.log("--------------Already read done!");      
+    //             console.log(typeof result);
+    //             result=JSON.stringify(result);
+    //             console.log("---------------- result:" +  (result) );
                 
-                var data = JSON.parse(result);
-                console.log("---------------data : " + data);
-                
-                res.json(data);
-                db.close();
-            });
-        });
+    //             var data = JSON.parse(result);
+                               
+    //             res.json(data);
+    //             db.close();
+    //         });
+    //     });
         
-    });
+    // });
+
+
+    app.post('/viewSaveSearch', function (req, res) {
+            var name= req.body.userID;
+            console.log("-----------viewSaveSearch: "+name)
+            MongoClient.connect(url, function (err, db) {
+                if (err) throw err;
+    
+                    db.collection("savedSearch").aggregate([ 
+                        
+                        { $match : { userID : name }},
+                        { $unwind:'$description'},
+                        { $project : {
+                            _id : 1 ,
+                            description:1, savetime:1,savedate:1
+                        }}
+                        
+                    ]).toArray(function (err, result) {
+                
+                    
+                    if (err) throw err;
+                    //result = result.replace("\\\\", "");
+                //    console.log("--------------Already read done!");      
+                //    console.log(typeof result);
+                    result=JSON.stringify(result);
+                //    console.log("---------------- result:" +  (result) );
+     
+                    var data = JSON.parse(result);
+              
+                    for (var i = 0; i < data.length; i++) { 
+                        data[i].description = 
+                        
+                        " fieldName = " + data[i].description.fieldName + 
+                        "-- condition = " + data[i].description.condition + 
+                        "-- value = " + data[i].description.value  + 
+                        "-- operator = " + data[i].description.operator ;
+
+
+                      //  console.log("---------------data : " +  data[i].description);
+                    }
+                  
+                    res.json(data);
+                    db.close();
+                });
+            });
+            
+        });
 
     app.post('/getUserId', function (req, res) {
         
