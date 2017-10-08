@@ -1092,23 +1092,23 @@ class Search extends React.Component {
                             </Col>
                         </Row>
                         <Row>
-                            <Col sm={1} md={1}>
+                            <Col sm={2} md={2}>
                             
                             </Col>
-                            <Col sm={1} md={1}>
+                            <Col sm={2} md={2}>
                                  
                             </Col>
-                            <Col sm={1} md={1}>
-                                 <Button onClick={this.getTxtViewSavedSearch.bind(this)}> View saved search </Button>
+                            <Col sm={2} md={2}>
+                                 <Button bsStyle="primary" onClick={this.getTxtViewSavedSearch.bind(this)}> View Saved search  </Button>
 			    </Col>
-                            <Col sm={1} md={1}>
-				<Button onClick={this.getTxtSave}> Save search</Button>
+                            <Col sm={2} md={2}>
+				<Button bsStyle="info" onClick={this.getTxtSave}> Save search</Button>
                             </Col>
-                            <Col sm={1} md={1}>
-                                <Button onClick={this.searchChange}>Run Search</Button>
+                            <Col sm={2} md={2}>
+                                <Button bsStyle="success" onClick={this.searchChange}>Run Search</Button>
                             </Col>
-                            <Col sm={1} md={1}>
-                                <Button onClick={this.handleChangeDataSource}>Cancel</Button>
+                            <Col sm={2} md={2}>
+                                <Button bsStyle="danger" onClick={this.handleChangeDataSource}>Cancel</Button>
                             </Col>
                         </Row>
                     </Grid>
