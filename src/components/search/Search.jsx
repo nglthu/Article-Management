@@ -101,17 +101,27 @@ class Search extends React.Component {
 
     }
 
+    getQueryDescription()
+    {
+	return this.state.rows.map((query, index) => (
+           <span>{" "+query.operator + " if " + query.fieldName + " "+ query.condition +" "+ query.value}</span>
+        ));
+      
+
+        
+    }
+
     getQueryList() {
 
         return this.state.rows.map((query, index) => (
 
-            <tr key={index}>
-                <td> {index == 0 ? '' : <select id={'ddOperator_' + index} value={query.operator} onChange={this.handleoptionsOperatorState.bind(this)} ref="slOperator">
+            <Row key={index}>
+                <Col sm={1} md={1}> {index == 0 ? '' : <select id={'ddOperator_' + index} value={query.operator} onChange={this.handleoptionsOperatorState.bind(this)} ref="slOperator">
                     <option value="Or">Or</option>
                     <option value="And">And</option>
                 </select>}
-                </td>
-                <td>
+                </Col>
+                <Col sm={1} md={2}>
                     If <select id={'ddFieldName_' + index} value={query.fieldName} onChange={this.handleoptionsFieldState.bind(this)} ref="slField">
                         <option value="Author">Author</option>
                         <option value="Title">Title</option>
@@ -120,8 +130,8 @@ class Search extends React.Component {
                         <option value="DOI">DOI</option>
                         {/* <option value="Year">Year</option> */}
                     </select>
-                </td>
-                <td>
+                </Col>
+                <Col sm={4} md={2}>
                     <select id={'ddCondition_' + index} value={query.condition} onChange={this.handleoptionsConditionState.bind(this)} ref="slCondition">
                         <option value="Contains">Contains</option>
                         <option value="Doesnotcontains">Does not contains</option>
@@ -133,13 +143,15 @@ class Search extends React.Component {
                         <option value="Ismorethan">Is more than</option>
                         <option value="Ismorethanorequal">Is more than or equal</option> */}
                     </select>
-                </td>
-                <td>
+                </Col>
+                <Col sm={4} md={2}>
                     <input type="text" id={'txtsearch_' + index} value={query.value} onChange={this.handleSearchTextChange.bind(this)} />
-                </td>
-                <td><button onClick={this.addRow} >Add</button></td>
-                <td>{index == 0 ? <button value={index} title='First row delete Disabled' disabled>Remove</button> : <button value={index} onClick={this.removeRow}>Remove</button>}</td>
-            </tr>
+                </Col>
+                <Col sm={1} md={1}><Button onClick={this.addRow} >Add</Button></Col>
+                <Col sm={1} md={1}>{index == 0 ? <button value={index} title='First row delete Disabled' disabled>Remove</button> : <Button value={index} onClick={this.removeRow}>Remove</Button>}</Col>
+		<Col sm={1} md={1}></Col>
+
+            </Row>
         ))
 
 
@@ -973,11 +985,11 @@ class Search extends React.Component {
                 {/* <NavBar /> */}
                 <p style={{ display: 'flex', justifyContent: 'center' }}>
                     Username: <input type="text" ref="txt_login" value="mary0220"/>
-                    <button onClick={this.getTxtLogin.bind(this)} > Login</button>
+                    <Button onClick={this.getTxtLogin.bind(this)} > Login</Button>
                     &nbsp; &nbsp; &nbsp; &nbsp;
-                    <button onClick={this.getTxtSave}> Save search</button>
+                    <Button onClick={this.getTxtSave}> Save search</Button>
                     &nbsp; &nbsp; &nbsp; &nbsp;
-                    <button onClick={this.getTxtViewSavedSearch.bind(this)}> View saved search </button>
+                    <Button onClick={this.getTxtViewSavedSearch.bind(this)}> View saved search </Button>
                 </p>
 
 
@@ -1002,7 +1014,7 @@ class Search extends React.Component {
                                 Description:
                             </Col>
                             <Col sm={3} md={9}>
-                                {JSON.stringify(this.state.rows, null, 2)}
+                                {this.getQueryDescription()}
                             </Col>
                         </Row>
                         <Row>
@@ -1023,24 +1035,67 @@ class Search extends React.Component {
                                 onChange={this.handleChangeTo}
                             /></Col>
                             <Col sm={1} md={1}>
-                                <Button onClick={this.searchChange}>Filter</Button>
+                                
                             </Col>
                             <Col sm={1} md={1}>
-                                <Button onClick={this.handleChangeDataSource}>Cancle</Button>
+                                
                             </Col>
                         </Row>
                     </Grid>
 
                 </div>
 
-                <div>
-                    <table>
-                        <tbody>
+                <div className="container clearfix" style={{border:'1px solid'}}>
+		Query Builder:
+                    <Grid>           			           
                             {this.getQueryList()}
-                        </tbody>
-                    </table>
+                        
+                    </Grid>
 
                 </div>
+                <div style={{ display: 'flex' }}>
+                    <Grid>
+                        <Row>
+                            <Col sm={2} md={2}>
+
+                            </Col>
+                            <Col sm={6} md={6}>
+
+
+                            </Col>
+                            <Col sm={4} md={4}>
+
+                            </Col>
+                        </Row>
+                        <Row>
+                        </Row>
+                        <Row>
+                            <Col sm={1} md={1}>
+                            
+                            </Col>
+                            <Col sm={3} md={9}>
+                            
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={1} md={1}>
+                            
+                            </Col>
+                            <Col sm={3} md={3}>
+                            
+                            </Col>
+                            <Col sm={1} md={1}></Col>
+                            <Col sm={3} md={3}>
+                            </Col>
+                            <Col sm={1} md={1}>
+                                <Button onClick={this.searchChange}>Search</Button>
+                            </Col>
+                            <Col sm={1} md={1}>
+                                <Button onClick={this.handleChangeDataSource}>Cancle</Button>
+                            </Col>
+                        </Row>
+                    </Grid>
+		</div>
 
                 <div className="container clearfix">
 
