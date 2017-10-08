@@ -71,6 +71,8 @@ class Search extends React.Component {
 
            // console.log((this.state.user));
     }
+
+
     constructor(props) {
         super(props)
         this.state = {
@@ -85,6 +87,8 @@ class Search extends React.Component {
             optionsFieldState: 'Author',
             optionsConditionState: 'Contains',
             searchText: '',
+	    state_getUserId :'mary0220',
+            description:'',
             listSaveSearch: []
             
             
@@ -103,13 +107,19 @@ class Search extends React.Component {
 
     getQueryDescription()
     {
-	return this.state.rows.map((query, index) => (
-           <span>{" "+query.operator + " if " + query.fieldName + " "+ query.condition +" "+ query.value}</span>
-        ));
-      
-
         
+        this.state.description="";
+	for (var i=0;i<this.state.rows.length;i++)
+        {
+	  var query = this.state.rows[i];
+
+          this.state.description +=  " " + query.operator + " if " + query.fieldName +  " "+ query.condition +" "+   query.value;
+         }
+         return this.state.description;
+	
     }
+
+    
 
     getQueryList() {
 
@@ -144,12 +154,12 @@ class Search extends React.Component {
                         <option value="Ismorethanorequal">Is more than or equal</option> */}
                     </select>
                 </Col>
-                <Col sm={4} md={2}>
+                <Col sm={4} md={3}>
                     <input type="text" id={'txtsearch_' + index} value={query.value} onChange={this.handleSearchTextChange.bind(this)} />
                 </Col>
-                <Col sm={1} md={1}><Button onClick={this.addRow} >Add</Button></Col>
-                <Col sm={1} md={1}>{index == 0 ? <button value={index} title='First row delete Disabled' disabled>Remove</button> : <Button value={index} onClick={this.removeRow}>Remove</Button>}</Col>
-		<Col sm={1} md={1}></Col>
+                <Col sm={1} md={1}><Button onClick={this.addRow} >+</Button></Col>
+                <Col sm={1} md={1}>{index == 0 ? <Button value={index} title='First row delete Disabled' disabled>-</Button> : <Button value={index} onClick={this.removeRow}>-</Button>}</Col>
+		<Col sm={2} md={2}></Col>
 
             </Row>
         ))
@@ -771,32 +781,34 @@ class Search extends React.Component {
 
 
     //////////////////////USER PRESS
-    getUserID(txt_user) {
+   
+
+   //getUserID(txt_user) {
         //alert(txt_user);
-        fetch(config.urlLoginUsername, {
-            method: "post",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+     //   fetch(config.urlLoginUsername, {
+     //       method: "post",
+     //       headers: {
+     //           'Accept': 'application/json',
+     //           'Content-Type': 'application/json'
+     //       },
 
             //make sure to serialize your JSON body
-            body: JSON.stringify({
-                username: txt_user
+      //      body: JSON.stringify({
+      //          username: txt_user
                 //  password: myPassword
-            })
-        })
-            .then((response) => {
-                return response.json()
-            })
-            .then((json) => {
+      //      })
+      //  })
+        //    .then((response) => {
+        //        return response.json()
+        //    })
+        //    .then((json) => {
 
                 
-                this.setState({
-                    state_getUserId: json,
-
-                })
-            });
+         //       this.setState({
+ //                   state_getUserId: json,
+//
+  //              })
+    //        });
 
         //alert(JSON.stringify(this.state.state_getUserId));
 
@@ -807,7 +819,7 @@ class Search extends React.Component {
         //   headers: headers,   
         //   body:body
         // })
-    }
+   // }
 
 
     getTxtViewSavedSearch(){
@@ -830,18 +842,7 @@ class Search extends React.Component {
            
             return response.json()
         })
-        .then((json) => {
-
-            //var v_filterJson = [];
-            //return json.description[0].fieldName;
-            
-            //console.log(json);
-            //console.log("------" + v_filterJson);
-            //var v_j = json.description.length;
-            // for(var i=0; i < json.length; i++){
-
-            //     console.log(json[i].description.fieldName);
-            // }
+        .then((json) => {           
             this.setState({
                 listSaveSearch: json
             })
@@ -852,12 +853,12 @@ class Search extends React.Component {
       
     }
 
-    getTxtLogin() {
-        var text = this.refs.txt_login.value;
-        this.setState({
-            state_getUserId: this.getUserID(text)
-        })
-    }
+  //  getTxtLogin() {
+  //      var text = this.refs.txt_login.value;
+  //      this.setState({
+  //          state_getUserId: this.getUserID(text)
+  //      })
+ //   }
 
 
     getTxtSave() {
@@ -866,12 +867,28 @@ class Search extends React.Component {
         //alert("dateTo:" + this.state.startDateTo.format("DD-MM-YYYY"));
         //console.log("rows length:", rows.length, "row value: ", rows.value);
         // alert("description:" + JSON.stringify(this.state.rows, null, 2));
-        
+
         var rows = this.state.rows;
 
         //Conversion of string to JSON object 
         //console.log(JSON.parse(JSON.stringify(this.state.rows, null, 2)));
 
+	var date = new Date();
+
+        var n = date.getTime();
+
+
+//	alert(JSON.stringify({
+ //               userID: this.state.state_getUserId,
+ //               shortName: date.getYear()+(date.getMonth()+1)+date.getDate()  + "_" + n + '_' + this.state.state_getUserId,
+//                description:this.state.description,
+//                SearchValue:JSON.stringify(this.state.rows, null, 2),
+//                SearchValue:this.state.rows,
+//                savetime: moment().format('HH:mm:ss a'),
+//                savedate: moment().format('DD-MM-YYYY'),
+//                datelasttring: this.state.startDateFrom.format("DD-MM-YYYY") + "->" + this.state.startDateFrom.format("DD-MM-YYYY")
+                
+//            }));
            
         fetch(config.insertSaveSearch, {
             method: "post",
@@ -880,11 +897,15 @@ class Search extends React.Component {
                 'Content-Type': 'application/json'
             },
 
+
+
             //make sure to serialize your JSON body
             body: JSON.stringify({
                 userID: this.state.state_getUserId,
-                description:this.state.rows,
-                SearchValue: JSON.stringify(this.state.rows, null, 2),
+                shortName: date.getYear()+(date.getMonth()+1)+date.getDate()  + "_" + n + '_' + this.state.state_getUserId,
+                description:this.state.description,
+//                SearchValue:JSON.stringify(this.state.rows, null, 2),
+                SearchValue:this.state.rows,
                 savetime: moment().format('HH:mm:ss a'),
                 savedate: moment().format('DD-MM-YYYY'),
                 datelasttring: this.state.startDateFrom.format("DD-MM-YYYY") + "->" + this.state.startDateFrom.format("DD-MM-YYYY")
@@ -901,7 +922,9 @@ class Search extends React.Component {
 
             })
         })
-        
+  
+
+      
         //console.log(JSON.parse(JSON.stringify(this.state.state_description)) );
     
         //let optionFilterData = [];
@@ -983,15 +1006,6 @@ class Search extends React.Component {
 
             <section id="page-title">
                 {/* <NavBar /> */}
-                <p style={{ display: 'flex', justifyContent: 'center' }}>
-                    Username: <input type="text" ref="txt_login" value="mary0220"/>
-                    <Button onClick={this.getTxtLogin.bind(this)} > Login</Button>
-                    &nbsp; &nbsp; &nbsp; &nbsp;
-                    <Button onClick={this.getTxtSave}> Save search</Button>
-                    &nbsp; &nbsp; &nbsp; &nbsp;
-                    <Button onClick={this.getTxtViewSavedSearch.bind(this)}> View saved search </Button>
-                </p>
-
 
                 <div id="grid_searchField" style={{ display: 'flex' }}>
                     <Grid>
@@ -1081,17 +1095,20 @@ class Search extends React.Component {
                             <Col sm={1} md={1}>
                             
                             </Col>
-                            <Col sm={3} md={3}>
-                            
-                            </Col>
-                            <Col sm={1} md={1}></Col>
-                            <Col sm={3} md={3}>
+                            <Col sm={1} md={1}>
+                                 
                             </Col>
                             <Col sm={1} md={1}>
-                                <Button onClick={this.searchChange}>Search</Button>
+                                 <Button onClick={this.getTxtViewSavedSearch.bind(this)}> View saved search </Button>
+			    </Col>
+                            <Col sm={1} md={1}>
+				<Button onClick={this.getTxtSave}> Save search</Button>
                             </Col>
                             <Col sm={1} md={1}>
-                                <Button onClick={this.handleChangeDataSource}>Cancle</Button>
+                                <Button onClick={this.searchChange}>Run Search</Button>
+                            </Col>
+                            <Col sm={1} md={1}>
+                                <Button onClick={this.handleChangeDataSource}>Cancel</Button>
                             </Col>
                         </Row>
                     </Grid>
@@ -1137,7 +1154,7 @@ class Search extends React.Component {
                         results={this.state.listSaveSearch}
                         showFilter={false}
                         showSettings={true}
-                        columns={["description","savedate","savetime"]}
+                        columns={["shortName","description","savedate","savetime"]}
                         columnMetadata={columnMeta2}
                         tableClassName={'table table-bordered table-striped table-hover '}
                         useGriddleStyles={true}
