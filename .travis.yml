@@ -5,3 +5,6 @@ services:
   - docker-compose build
   - docker run -p 3000:80 app-web
   - curl -i localhost:3000
+cache:
+  directories:
+    - "node_modules"
