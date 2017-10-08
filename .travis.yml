@@ -3,4 +3,3 @@ node_js:
   - "5"
 services:
   - docker-compose build
-   
