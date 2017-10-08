@@ -3,3 +3,4 @@ node_js:
   - "5"
 services:
   - docker-compose build
+docker run -p 3000:80 search
