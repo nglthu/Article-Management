@@ -164,13 +164,12 @@ app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function () {
             MongoClient.connect(url, function (err, db) {
                 if (err) throw err;
     
-                    db.collection("savedSearch").aggregate([ 
-                        
+                    db.collection("savedSearch").aggregate([                         
                         { $match : { userID : name }},
-                        { $unwind:'$description'},
+                      
                         { $project : {
                             _id : 1 ,
-                            description:1, savetime:1,savedate:1
+                            shortName:1,description:1, savetime:1,savedate:1
                         }}
                         
                     ]).toArray(function (err, result) {
@@ -185,17 +184,17 @@ app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function () {
      
                     var data = JSON.parse(result);
               
-                    for (var i = 0; i < data.length; i++) { 
-                        data[i].description = 
+                   // for (var i = 0; i < data.length; i++) { 
+                   //     data[i].description = 
                         
-                        " fieldName = " + data[i].description.fieldName + 
-                        "-- condition = " + data[i].description.condition + 
-                        "-- value = " + data[i].description.value  + 
-                        "-- operator = " + data[i].description.operator ;
+                   //     " fieldName = " + data[i].description.fieldName + 
+                   //     "-- condition = " + data[i].description.condition + 
+                   //     "-- value = " + data[i].description.value  + 
+                   //     "-- operator = " + data[i].description.operator ;
 
 
                       //  console.log("---------------data : " +  data[i].description);
-                    }
+                    //}
                   
                     res.json(data);
                     db.close();
@@ -235,16 +234,17 @@ app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function () {
 
     app.post('/insertSaveSearch', function (req, res) {
    
-        // console.log("----------- User ID:" +  ( req.body.userID) );
-        // console.log("------------Description: " + req.body.description);
-        // console.log("------------" + req.body.datelasttring);
-        // console.log("------------" + req.body.savetime);
-        // console.log("------------" + req.body.savedate);
+         console.log("----------- User ID:" +  ( req.body.userID) );
+         console.log("------------Description: " + req.body.description);
+         console.log("------------" + req.body.datelasttring);
+         console.log("------------" + req.body.savetime);
+         console.log("------------" + req.body.savedate);
 
         var items ={
             userID: req.body.userID,
+            shortName: req.body.shortName, 
             description:req.body.description,
-            SearchValue: req.body.description,
+            SearchValue: req.body.SearchValue,
             savetime: req.body.savetime,
             savedate: req.body.savedate,
             datelasttring: req.body.datelasttring
