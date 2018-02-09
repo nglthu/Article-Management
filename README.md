@@ -1,3 +1,18 @@
+[![licence badge]][licence]
+[![stars badge]][stars]
+[![forks badge]][forks]
+[![issues badge]][issues]
+
+[licence badge]:https://img.shields.io/badge/license-MIT-blue.svg
+[stars badge]:https://img.shields.io/github/stars/hey-red/Markdown.svg
+[forks badge]:https://img.shields.io/github/forks/hey-red/Markdown.svg
+[issues badge]:https://img.shields.io/github/issues/hey-red/Markdown.svg
+
+[licence]:https://github.com/nglthu/Docker_React_Heroku/blob/master/LICENSE
+[stars]:https://github.com/nglthu/Docker_React_Heroku/stargazers
+[forks]:https://github.com/nglthu/Docker_React_Heroku/network
+[issues]:https://github.com/nglthu/Docker_React_Heroku/issues
+
 # Deployment : Heroku
 http://team5v2.herokuapp.com/search
 
