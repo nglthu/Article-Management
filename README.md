@@ -13,6 +13,10 @@
 [forks]:https://github.com/nglthu/Docker_React_Heroku/network
 [issues]:https://github.com/nglthu/Docker_React_Heroku/issues
 
+# Introduction
+
+A web app, built using the React framework, NodeJS, Express, Docker, MongoDB, webpack module bundler, Cucumber, PassportJS and Travis CI that displays and searches article(s) and various points of interest. Users can search all included information related to articles and, when selected, additional information about their management is presented from the own built APIs.
+
 # Deployment : Heroku
 [💚Access Link 💚](http://team5v2.herokuapp.com/search)
 
