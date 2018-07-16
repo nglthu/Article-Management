@@ -5,3 +5,4 @@
 *.log
 /node_modules/**
 /dist/imgs/.DS_Store
+.DS_Store
