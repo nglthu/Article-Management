@@ -17,6 +17,8 @@
 
 A web app, built using the React framework, NodeJS, Express, Docker, MongoDB, webpack module bundler, Cucumber, PassportJS and Travis CI that displays and searches article(s) and various points of interest. Users can search all included information related to articles and, when selected, additional information about their management is presented from the own built APIs.
 
+<a href="http://team5v2.herokuapp.com/search"><img src="images/articleOnPhoneRound.png" width="50%" heigh="auto" alt="demo"> </a>
+
 # Deployment : Heroku
 [💚Access Link 💚](http://team5v2.herokuapp.com/search)
 
